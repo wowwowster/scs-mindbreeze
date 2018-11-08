@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="NOINDEX,NOFOLLOW" >
+	<title>Introduction to SCS</title>
+	<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon" >
+	<link rel="stylesheet" href="../css/help.css" type="text/css" >
+</head>
+<body>
+	<div id="header" >
+		<div class="HeaderImgLeft" ></div>
+		<div class="HeaderImgRight" ></div>
+		<div class="HeaderText" >Introduction to SCS</div>
+	</div>
+	<div id="body" class="tac" >
+		<div style="text-align: left">
+		
+			<div class="Nav" ><span class="NavLink" ><a href="../index.html" >Documentation Home</a></span><span class="NavSeparator" >&gt;</span><span class="NavSelected" >SCS Web Manager</span></div>
+			
+			<div class="Menu1" >Contents</div>
+			<div class="Menu1Text" >
+				<div class="TOC1" ><a href="#arch" >1 - Architecture</a></div>
+				<div class="TOC2" ><a href="#ind" >1.1 - Indexing process</a></div>
+				<div class="TOC2" ><a href="#init" >1.1.1 - Initial push</a></div>
+				<div class="TOC3" ><a href="#incr" >1.1.2 - Incremental push</a></div>
+				<div class="TOC3" ><a href="#admin" >1.2 - SCS Administration</a></div>
+				<div class="TOC1" ><a href="#update" >2 - Update process </a></div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="arch" >1 - Architecture</a></div>
+			<div class="Menu1Text" >
+				<div>SCS is a Tomcat based framework hosting connectors allowing GSA to index content from external content source which couldn't be indexed by native crawling process.</div>
+				<div></div>It is made with a Core managing single or plurial connectors instance for each content source it indexes.
+				<div><img class="egimg" src="../img/archSCS4.png" /></div>
+			
+			<div class="Menu2" ><a class="LinkRef" id="ind" >1.1 - Indexing process</a></div>
+			<div class="Menu2Text" >
+			<div class="Menu3" ><a class="LinkRef" id="init" >1.1.1 - Initial push</a></div>
+			<div class="Menu3Text" >
+			<div>
+					 <ul>
+						<li><b>Step 1:</b> SCS Core launches indexation process for a specific connector depending on its configured schedule.</li>
+						<li><b>Step 2-3:</b> Connector lists all documents then load content and metadata in separated threads. Depending on content source, <a href="#update">connector can detect changes</a> on documents or ACLs which allows him to recrawl only modified documents for update indexations.</li>
+						<li><b>Step 4:</b> List of documents and ACLs are sent back to SCS Core.</li>
+						<li><b>Step 5:</b> SCS Core saved documents IDs and ACLs hashs in state database, then it pushes them to GSA with push feeds.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="Menu3" ><a class="LinkRef" id="incr" >1.1.2 - Incremental push</a></div>
+			<div class="Menu3Text" >
+			Incremental push is done for every push once intial push has been performed. Its role is to update index and manage change on content source.
+			<div>
+					 <ul>
+						<li><b>Step 1:</b> SCS Core launches indexation process for a specific connector depending on its configured schedule.</li>
+						<li><b>Step 2-3:</b> Depending on content source, <a href="#update">connector can detect changes</a> on documents or ACLs which allows him to recrawl only modified documents and ACLs. Otherwise Connector lists all documents then load content and metadata in separated threads. </li>
+						<li><b>Step 4:</b> List of documents and ACLs are sent back to SCS Core.</li>
+						<li><b>Step 5:</b> SCS Core saved documents IDs and ACLs hashs in state database, then it pushes them to GSA or the ftp server with push feeds.
+						<ul>
+							<li>push feed: add content</li>
+							<li>update feed: modify existing content</li>
+							<li>delete feed: remove content on GSA</li>
+						<ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="Menu2" ><a class="LinkRef" id="admin" >1.2 - SCS Administration</a></div>
+			<div class="Menu2Text" >
+				SCS is configurable via SCS Web Manager. You can do the following tasks via this application:
+				<ul>
+					<li>Configure: Modify connectors parameters for each specific instance. </li>
+					<li>Monitor: You can have information about indexation volume, statistics and activity for each connector. </li>
+					<li>Schedule indexation: You can schedule indexation time slot for each connector on their configuration page. Refer to connector configuration documentation for additionnal information.</li>
+				</ul>
+				
+			</div>
+			<div class="Menu1" ><a class="LinkRef" id="update" >2 - Update process</a></div>
+			<div>Documents or ACLs changes can be detected in two ways:</div>
+			<div>
+				<ul>
+					<li>Update detection: Content source API allows us to detect changes when requested. In this ideal case, we focus re-crawl process to changed documents or ACLs which is the fastest updating way.</li>
+					<li>General update indexing: When we cannot detect changes via Content source API, we re-list all documents or ACLs and compare them to previous indexation list.</li>
+				</ul>
+			</div>
+			<div>In each case, documents and ACLs lists database is updated with newer version and change are made on GSA refreshing its index with changes..</div>
+			
+		</div>
+	</div>
+	<div id="footer" class="tac" >
+		<div class="copy" >Copyright &copy; 2013 Sword Group. All Rights Reserved.</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="NOINDEX,NOFOLLOW" >
+	<title>SCS Installation &amp; initial configuration</title>
+	<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon" >
+	<link rel="stylesheet" href="../css/help.css" type="text/css" >
+	<link rel="stylesheet" href="../css/jquery-ui/jquery-ui.min.css" type="text/css" >
+</head>
+<body>
+	<div id="header" >
+		<div class="HeaderImgLeft" ></div>
+		<div class="HeaderImgRight" ></div>
+		<div class="HeaderText" >SCS Installation &amp; initial configuration</div>
+	</div>
+	<div id="body" class="tac" >
+		<div style="text-align: left">
+		
+			<div class="Nav" ><span class="NavLink" ><a href="../index.html" >Documentation Home</a></span><span class="NavSeparator" >&gt;</span><span class="NavSelected" >Installation</span></div>
+			
+			<div class="Menu1" >Contents</div>
+			<div class="Menu1Text" >
+				<div class="TOC1" ><a href="#win" >1 - Windows</a></div>
+				<div class="TOC2" ><a href="#winstall" >1.1 - Installation</a></div>
+				<div class="TOC2" ><a href="#whttpsetup" >1.2 - HTTP setup</a></div>
+				<div class="TOC2" ><a href="#wlic" >1.3 - License installation</a></div>
+				<div class="TOC2" ><a href="#wcerts" >1.4 - SSL certificate</a></div>
+				<div class="TOC2" ><a href="#wsvc" >1.5 - Starting the SCS</a></div>
+				<div class="TOC2" ><a href="#wgwm" >1.6 - Accessing the SCS Web Manager</a></div>
+				<div class="TOC1" ><a href="#lin" >2 - Linux</a></div>
+				<div class="TOC2" ><a href="#linstall" >2.1 - Installation</a></div>
+				<div class="TOC2" ><a href="#lhttpsetup" >2.2 - HTTP setup</a></div>
+				<div class="TOC2" ><a href="#llic" >2.3 - License installation</a></div>
+				<div class="TOC2" ><a href="#lcerts" >2.4 - SSL certificate</a></div>
+				<div class="TOC2" ><a href="#lsvc" >2.5 - Starting the SCS</a></div>
+				<div class="TOC2" ><a href="#lgwm" >2.6 - Accessing the SCS Web Manager</a></div>
+				<div class="TOC1" ><a href="#web" >3 - Registering the GSA</a></div>
+				<div class="TOC2" ><a href="#wgsahost" >3.1 - Configure GSA hostname</a></div>
+				<div class="TOC2" ><a href="#wgsatrust" >3.2 - Trust GSA certificate</a></div>
+				<div class="TOC2" ><a href="#wgsaconfirm" >3.3 - Review and confirm</a></div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="win" >1 - Windows</a></div>
+			<div class="Menu1Text" >
+				<div class="Menu2" ><a class="LinkRef" id="winstall" >1.1 - Installation</a></div>
+				<div class="Menu2Text" >
+					<div>On Windows systems, double-click the file <span class="shellscript" >SCS Installer.exe</span>.</div>
+					<div>A welcome screen will appear. Click the <span class="shellscript" >Next</span> button.</div>
+					<div><img class="egimg" src="../img/install_1.png" /></div>
+					<div>Choose the directory where the SCS will be installed. Click on the <span class="shellscript" >Browse</span> button or enter the directory path then click the <span class="shellscript" >Next</span> button.</div>
+					<div><img class="egimg" src="../img/install_2.png" /></div>
+					<div>Click on the <span class="shellscript" >Install</span> button when you are ready to proceed with the installation.</div>
+					<div><img class="egimg" src="../img/install_3.png" /></div>
+					<div>When installation completes, the installer will start the <span class="shellscript" >SCS Setup application</span> to proceed with the initial setup of the SCS.</div>
+					<div>The steps below describe the minimal configuration steps.</div>
+					<div>Refer to the <a href="./Setup.html" >SCS Setup application documentation</a> for complete information about the <span class="shellscript" >SCS Setup application</span>.</div>
+					<div><img class="egimg" src="../img/install_4.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="whttpsetup" >1.2 - HTTP setup</a></div>
+				<div class="Menu2Text" >
+					<div>The <span class="shellscript" >SCS Setup application</span> starts, focused on the <span class="shellscript" >Base configuration tab</span>:</div>
+					<div><img class="egimg" src="../img/install_5.png" /></div>
+					<div>
+						Enter the following information:
+						<ul>
+							<li>
+								<div>In the <span class="shellscript" >Hostname</span> textbox, enter the Fully Qualified Domain Name (FQDN) of the machine hosting the SCS (i.e. the machine on which you just installed to SCS).</div>
+								<div>A FQDN consists of the machine name followed by the domain suffix e.g.: <span class="shellscript" >mymachine.mydomain.com</span></div>
+							</li>
+							<li>
+								<div>In the <span class="shellscript" >HTTP port</span> textbox, enter a TCP port number. The port must be available as the SCS will use it to listen for incoming HTTP requests.</div>
+							</li>
+							<li>
+								<div>In the <span class="shellscript" >HTTPS port</span> textbox, enter a TCP port number. The port must be available as the SCS will use it to listen for incoming HTTPS requests.</div>
+							</li>
+							<li>
+								<div>In the <span class="shellscript" >Administration password</span> textbox, enter a password. This password will be necessary to connect to the <span class="shellscript" >SCS Web Manager</span>.</div>
+							</li>
+						</ul>
+					</div>
+					<div>Then click the <span class="shellscript" >Save</span> button.</div>
+					<div><img class="egimg" src="../img/install_6.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="wlic" >1.3 - License installation</a></div>
+				<div class="Menu2Text" >
+					<div>Click the <span class="shellscript" >License</span> tab:</div>
+					<div><img class="egimg" src="../img/install_7.png" /></div>
+					<div>Click the <span class="shellscript" >Export Instance ID</span> browse button to select the location where the SCS instance ID file should be saved:</div>
+					<div><img class="egimg" src="../img/install_8.png" /></div>
+					<div>Then click the <span class="shellscript" >Save</span> button.</div>
+					<div>Send generated file by email to your Sword contact, requesting a license for this SCS instance ID.</div>
+					<div>You will receive a files named <span class="shellscript" >scs.lic</span> in return.</div>
+					<div>Save this <span class="shellscript" >scs.lic</span> file anywhere on the machine and click the <span class="shellscript" >Import License</span> browse button to indicate the location where the SCS license file has been saved:</div>
+					<div><img class="egimg" src="../img/install_9.png" /></div>
+					<div>Then click the <span class="shellscript" >Open</span> button.</div>
+					<div>If the license is valid, the <span style="color: red; font-weight: bold" >Invalid license</span> message will change and indicate the license expiration date.</div>
+					<div><img class="egimg" src="../img/install_10.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="wcerts" >1.4 - SSL certificate</a></div>
+				<div class="Menu2Text" >
+					<div>Click the <span class="shellscript" >Certificates</span> tab:</div>
+					<div><img class="egimg" src="../img/install_11.png" /></div>
+					<div>The SCS is delivered with a self-signed certificate valid for the host <span class="shellscript" >localhost</span> - which is not ideal because web browsers and the GSA will not trust this certificate and you will get a security warning every time you connect to the <span class="shellscript" >SCS Web Manager</span>.</div>
+					<div>First, generate a certificate for the correct FQDN by clicking the <span class="shellscript" >Generate new</span> button.</div>
+					<div>The <span class="shellscript" >Host</span> and the certificate validity period will change:</div>
+					<div><img class="egimg" src="../img/install_12.png" /></div>
+					<div>Then you can generate a CSR and import the CSR reply if you want the SCS to use a certificate signed by a Certificate Authority (CA) but this is not mandatory because now that the certificate is using the correct hostname, we can wonfigure the web browsers and the GSA to trust it.</div>
+					<div>Refer to the <a href="./Setup.html#SrvCert" >SCS Setup application documentation</a> for more information about signing a certificate and importing a signed certificate.</div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="wsvc" >1.5 - Starting the SCS</a></div>
+				<div class="Menu2Text" >
+					<div>Click the <span class="shellscript" >Service</span> tab then click the <span class="shellscript" >Start</span> button:</div>
+					<div><img class="egimg" src="../img/install_13.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="wgwm" >1.6 - Accessing the SCS Web Manager</a></div>
+				<div class="Menu2Text" >
+					<div>Once the SCS has started, click the <span class="shellscript" >Open configuration page button</span> button.</div>
+					<div>It will open the <span class="shellscript" >SCS Web Manager</span> with your default web brower.</div>
+					<div>If you get a security warning due to the certificate not being trusted, configure your browser to trust this certificate.</div>
+					<div>Then you will get prompted for authentication:</div>
+					<div><img class="egimg" src="../img/install_14.png" /></div>
+					<div>Use <span class="shellscript" >SCSAdmin</span> as the username and use the password you configured during <a href="#whttpsetup" >step 1.2</a> as the password.</div>
+					<div>The <span class="shellscript" >SCS Web Manager</span> home page will appear.</div>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="lin" >2 - Linux</a></div>
+			<div class="Menu1Text" >
+				<div class="Menu2" ><a class="LinkRef" id="linstall" >2.1 - Installation</a></div>
+				<div class="Menu2Text" >
+					<div>On Linux systems, extract the installer executables:</div>
+					<div><span class="shellscript" style="padding-left: 24px" >tar xpzf scs-installer.tar.gz</span></div>
+					<div>then execute the file <span class="shellscript" >scs-installer.sh</span>.</div>
+					<div style="padding-left: 36px" ><table><tr>
+						<td><div style="width: 12px; height: 12px" ><span class="ui-icon ui-icon-alert"></span></div><td>
+						<td><div>
+							<div style="padding-top: 6px" >The script <span class="shellscript" >scs-installer.sh</span> detects whether a desktop environment is available and starts in GUI mode or console mode.</div>
+							<div>On some Linux installations, JAVA fails to detect that the environment is headless and tries to start a GUI.</div>
+							<div>In that case, an error occurs (<span class="shellscript" >Could not initialize class sun.awt.X11GraphicsEnvironment</span>) and the installer exits immediately.</div>
+							<div>To force the installer to start in console mode, run the script with the argument <span class="shellscript" >/NoGUI</span>:</div>
+							<div><span class="shellscript" style="padding-left: 24px" >./scs-installer.sh /NoGUI</span></div>
+						</div><td>
+					</tr></table></div>
+					<div>If your operating system has a desktop environment, an installer GUI will appear. In that case follow the <a href="#win" >Windows installation steps</a> as the GUI is the same for windows and Linux.</div>
+					<div>If your operating system does not have a desktop environment, choose the directory where the SCS will be installed and press <span class="shellscript" >Enter</span>.</div>
+					<div><img class="egimg" src="../img/install_a.png" /></div>
+					<div>When installation completes, the installer will start the <span class="shellscript" >SCS Setup application</span> to proceed with the initial setup of the SCS.</div>
+					<div>The steps below describe the minimal configuration steps.</div>
+					<div>Refer to the <a href="./Setup.html" >SCS Setup application documentation</a> for complete information about the <span class="shellscript" >SCS Setup application</span>.</div>
+					<div><img class="egimg" src="../img/install_b.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="lhttpsetup" >2.2 - HTTP setup</a></div>
+				<div class="Menu2Text" >
+					<div>The <span class="shellscript" >SCS Setup application</span> detects that is is starting for the first time and requests the SCS base configuration parameters:</div>
+					<div><img class="egimg" src="../img/install_c.png" /></div>
+					<div>
+						Enter the following information:
+						<ul>
+							<li>
+								<div>As the <span class="shellscript" >Hostname</span>, enter the Fully Qualified Domain Name (FQDN) of the machine hosting the SCS (i.e. the machine on which you just installed to SCS).</div>
+								<div>A FQDN consists of the machine name followed by the domain suffix e.g.: <span class="shellscript" >mymachine.mydomain.com</span></div>
+							</li>
+							<li>
+								<div>As the <span class="shellscript" >HTTP port</span>, enter a TCP port number. The port must be available as the SCS will use it to listen for incoming HTTP requests.</div>
+							</li>
+							<li>
+								<div>As the <span class="shellscript" >HTTPS port</span>, enter a TCP port number. The port must be available as the SCS will use it to listen for incoming HTTPS requests.</div>
+							</li>
+							<li>
+								<div>As the <span class="shellscript" >Administration password</span>, enter a password. This password will be necessary to connect to the <span class="shellscript" >SCS Web Manager</span>.</div>
+							</li>
+						</ul>
+					</div>
+					<div>Then the <span class="shellscript" >SCS Setup application</span> main menu will appear:</div>
+					<div><img class="egimg" src="../img/install_d.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="llic" >2.3 - License installation</a></div>
+				<div class="Menu2Text" >
+					<div>From the <span class="shellscript" >SCS Setup application</span> main menu, select the <span class="shellscript" >License</span> menu item number and press enter:</div>
+					<div><img class="egimg" src="../img/install_e.png" /></div>
+					<div>The <span class="shellscript" >License</span> menu will appear:</div>
+					<div><img class="egimg" src="../img/install_f.png" /></div>
+					<div>Select the <span class="shellscript" >Export Instance ID</span> menu item number and, when prompted, enter the location where the SCS instance ID file should be saved:</div>
+					<div><img class="egimg" src="../img/install_g.png" /></div>
+					<div>Send generated file by email to your Sword contact, requesting a license for this SCS instance ID.</div>
+					<div>You will receive a files named <span class="shellscript" >scs.lic</span> in return.</div>
+					<div>Save this <span class="shellscript" >scs.lic</span> file anywhere on the machine then select the <span class="shellscript" >Import License</span> menu item number and, when prompted, enter the location where the SCS license file has been saved:</div>
+					<div><img class="egimg" src="../img/install_h.png" /></div>
+					<div>If the license is valid, a message saying <span style="font-weight: bold" >License updated successfully</span> will be displayed and you will be redirected to the main menu.</div>
+					<div><img class="egimg" src="../img/install_i.png" /></div>
+					<div>If you get back to the License menu, you will be able to see the license expiration date:</div>
+					<div><img class="egimg" src="../img/install_j.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="lcerts" >2.4 - SSL certificate</a></div>
+				<div class="Menu2Text" >
+					<div>From the <span class="shellscript" >SCS Setup application</span> main menu, select the <span class="shellscript" >Certificates</span> menu item number and press enter:</div>
+					<div><img class="egimg" src="../img/install_k.png" /></div>
+					<div>The <span class="shellscript" >Certificates</span> menu will appear:</div>
+					<div><img class="egimg" src="../img/install_l.png" /></div>
+					<div>The SCS is delivered with a self-signed certificate valid for the host <span class="shellscript" >localhost</span> - which is not ideal because web browsers and the GSA will not trust this certificate and you will get a security warning every time you connect to the <span class="shellscript" >SCS Web Manager</span>.</div>
+					<div>First, generate a certificate for the correct FQDN by selecting the <span class="shellscript" >Generate new</span> menu item number.</div>
+					<div>A message indicating the generation of a new certificate was successful will appear the currently installed certificate information will change:</div>
+					<div><img class="egimg" src="../img/install_m.png" /></div>
+					<div>Then you can generate a CSR and import the CSR reply if you want the SCS to use a certificate signed by a Certificate Authority (CA) but this is not mandatory because now that the certificate is using the correct hostname, we can wonfigure the web browsers and the GSA to trust it.</div>
+					<div>Refer to the <a href="./Setup.html#SrvCert" >SCS Setup application documentation</a> for more information about signing a certificate and importing a signed certificate.</div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="lsvc" >2.5 - Starting the SCS</a></div>
+				<div class="Menu2Text" >
+					<div>From the <span class="shellscript" >SCS Setup application</span> main menu, select the <span class="shellscript" >Service</span> menu item number and press enter:</div>
+					<div><img class="egimg" src="../img/install_n.png" /></div>
+					<div>The <span class="shellscript" >Service</span> menu will appear:</div>
+					<div><img class="egimg" src="../img/install_o.png" /></div>
+					<div>Select the <span class="shellscript" >Start</span> menu item number and press enter:</div>
+					<div><img class="egimg" src="../img/install_p.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="lgwm" >2.6 - Accessing the SCS Web Manager</a></div>
+				<div class="Menu2Text" >
+					<div>Once the SCS has started, select the <span class="shellscript" >View configuration page URL</span> menu item number and press enter.</div>
+					<div>It will output the <span class="shellscript" >SCS Web Manager</span> URL.</div>
+					<div>Open this URL with a HTML5-compatible Web browser.</div>
+					<div>If you get a security warning due to the certificate not being trusted, configure your browser to trust this certificate.</div>
+					<div>Then you will get prompted for authentication:</div>
+					<div><img class="egimg" src="../img/install_14.png" /></div>
+					<div>Use <span class="shellscript" >SCSAdmin</span> as the username and use the password you configured during <a href="#whttpsetup" >step 1.2</a> as the password.</div>
+					<div>The <span class="shellscript" >SCS Web Manager</span> home page will appear.</div>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="web" >3 - Registering the GSA</a></div>
+			<div class="Menu1Text" >
+				<div class="Menu2" ><a class="LinkRef" id="wgsahost" >3.1 - Configure GSA hostname</a></div>
+				<div class="Menu2Text" >				
+					<div>Click the <span class="shellscript" >GSA</span> tab from the <span class="shellscript" >SCS Web Manager</span>:</div>
+					<div><img class="egimg" src="../img/install_c0.png" /></div>
+					<div>In the <span class="shellscript" >default host</span> textbox, enter the Fully Qualified Domain Name (FQDN) of the GSA.</div>
+					<div>If your GSA is configured to use a dedicated admin NIC, in the <span class="shellscript" >Admin NIC host</span> textbox, enter the Fully Qualified Domain Name (FQDN) associated with the admin NIC IP address.</div>
+					<div>Then press the <span style="display: inline-block" class="ui-icon ui-icon-plusthick" ></span> button.</div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="wgsatrust" >3.2 - Trust GSA certificate</a></div>
+				<div class="Menu2Text" >				
+					<div>Unless your GSA uses a certificate signed by a well-known Certificate Authority, the GSA certificate chain will be displayed and you will be asked to choose which certificate or CA the SCS should trust:</div>
+					<div><img class="egimg" src="../img/install_c1.png" /></div>
+					<div>In above example, the GSA hostname is <span class="shellscript" >scsgsa2.parisgsa.lan</span> and thte GSA certificate is signed by a local CA named <span class="shellscript" >PARISGSA CA</span>.</div>
+					<div>Click on the <span class="shellscript" >Trust certificate</span> button next to the certificate or CA you want the SCS to trust.</div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="wgsaconfirm" >3.3 - Review and confirm</a></div>
+				<div class="Menu2Text" >				
+					<div>Review the GSA summary and confirm the GSA registration by clicking on the <span class="shellscript" >Register GSA</span> button:</div>
+					<div><img class="egimg" src="../img/install_c2.png" /></div>
+					<div>Upon successful GSA registration, you will be prompted for authentication against the SCS again.</div>
+					<div>You can either keep authenticating with your local <span class="shellscript" >SCSAdmin</span> account or authenticate with a GSA admin account.</div>
+					<div>Authenticating with a GSA account allows the SCS to perform a few GSA administration tasks such as registering the connector URL pattern, ensure access to the GSA feeder gate, etc...</div>
+					<div><img class="egimg" src="../img/install_c3.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="wgsaconfirm" >3.4 - Alternative to registering the GSA, the ftp server</a></div>
+				<div class="Menu2Text" >				
+					<div>If you wish to get the output feed on an ftp server instead of directly sending them to the GSA, you may do so by ticking the <span class="shellscript" >Do not directly connect to the GSA</span> button:</div>
+					<div><img class="egimg" src="../img/configftp.png" /></div>
+					<div>Simply fill the form with the hostname, username and password for ftp access then validate.</div>
+					
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>
+	<div id="footer" class="tac" >
+		<div class="copy" >Copyright &copy; 2013 Sword Group. All Rights Reserved.</div>
+	</div>
+</body>
+</html>

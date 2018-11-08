@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<conf xmlns="http://connect.sword-group.com/GlobalConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://connect.sword-group.com/GlobalConfig configuration.xsd " >
+
+	<!-- Implementation classes -->
+	<QueryProc>sword.push.generic.cmsimpl.ez.EZQueryProc</QueryProc>
+	<ObjectLoader>sword.push.generic.cmsimpl.ez.EZObjLoader</ObjectLoader>
+	
+	<!-- DB configuration -->
+	<DBUserName>RootDB</DBUserName>
+	<DBUserPassword>959f86555ddf4b270502eb0da76d6d7f88648e1bc2dc2f5bf7ffc25ce9dc8b0a</DBUserPassword>
+	
+	<!-- Source Sytem configuration -->
+	<DocumentsURL>https://swp-vm-kerberos.parisgsa.lan/GSP/serve/EZPublish/?id=${GPushID,1}</DocumentsURL>
+	
+	<!--  TODO - demander à Nicolas si c'est nécessaire 
+	GSA configuration 
+	<GSAHostName>swpgsa2.parisgsa.lan</GSAHostName>
+	<DataSource>EZPublish</DataSource>
+	-->
+
+</conf>

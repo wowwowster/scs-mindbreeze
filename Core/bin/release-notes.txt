@@ -1,0 +1,160 @@
+Version 1.0:
+- First release
+
+Version 1.1:
+- Authentication Module modified to be compatible with new GSA 6.4 OpenSAML Implementation
+- The RelayState parameter is no longer used
+- AuthN HTTP redirect binding request is now decrypted  and parsed using OpenSAML API to extract request Id, Issuer Name and Consumer URL
+- Those information are passed to the Artifact Register as Session Cookies and added to the Artifact Response
+- Artifact Response XML was modified to add those new parameters
+- Artifact Cache HashMap was changed to contain those new parameters
+- Subject Verification duration can now be configured in the configuration file in the <GlobalAutenticationTimeout > parameter
+- New required libs in the projects: (opensaml-2.3.1.jar, openws-1.3.0.jar,slf4j-api-1.5.8.jar,slf4j-simple-1.5.8.jar,joda-time-1.6.jar)
+
+Version 1.1.0.1
+- Added static AuthorizationProcessImpl.toAuthorizationUrlFormat(Repository, String).
+  * Its purpose is to let any authorization process rewrite the URL it performs authZ with.
+  * It was added to AuthorizationProcessImpl because:
+      - it is the class all authorization processes extend.
+      - it materializes the fact this method is supposed to be called at authorization time
+        (because URLs need to remain unchanged in the Vector they come from since SAML XML response must return original URLs)
+      - it doesn't force update of existingAuthorizationProcessImpl implementations that have nothing to do with URL rewriting 
+
+Version 1.1.0.2
+- Added buttons to choose between login form and public search when Krb negotiation doesn't take place
+
+Version 1.1.0.3
+- Exported html pages to resource files
+
+Version 1.1.0.4
+- Modified SAML Response in cause of authentication failure
+
+Version 1.2:
+- Added support for HTTP Post Binding Authentication method
+
+Version 1.2.0.1:
+- Modified SAML Response in cause of authentication failure (for POST Binding)
+- Issuer (IDP Entity ID) is no longer the hostName. It was externalized in the configuration
+
+Version 1.2.0.2:
+- Solved infinite loop problem in case Artifact can't be found
+- Increased Logging
+
+Version 1.2.1:
+- Externalized default DecisionStatus for unknown URLs. Configuration now needs to define whether unknown URLs will be given 
+  the INDETERMINATE status or DENY status.
+
+Version 1.2.1.1:
+- Fixed NullPointerException (when no cookie, HttpServletRequest.getCookies() returns null instead of empty array).
+
+Version 1.2.1.2:
+- Added "throws Exception" statement to AuthenticationProcessImpl.authenticate(ConfigHolder, String, String, String) and to 
+  AuthorizationProcessImpl.authorize(final Vector<DecisionQuery>, String).
+
+Version 1.2.1.3:
+- Fixed bug causing the RepositoryProcessor not to notify the AuthzProgressObserver that it finished when its connector is null.
+
+Version 1.2.1.4:
+- Fixed bug causing KrbGate to think configuration is invalid when file path contains ${catalina.home} or any environment variable.
+
+Version 2.0:
+- Added support for Subject mappings
+- Moved all config objects to conf package
+- Changed Vectors to ArrayList
+
+Version 2.0.1:
+- Version 2.0 fully tested and fixed
+- GAuthNService: Check if login page parameters are present before checking if Authorization header is present 
+  because in some occasions, IE re-sends the Authorization header when Posting the login page credentials.
+  
+ Version 2.1
+- Updated crypto lib.
+- Added the ability to add groups to the SAML authentication XML.
+- Added the ability to configure a Mapper as authentication process.
+
+Version 2.2
+- Building SAML responses using DocumentBuilders and Transformers from javax.xml.*.
+- Included AuthenticationManager utility into GSP.
+- Set NotBefore date to 1 minutes before current time.
+
+Version 2.3
+- Adapted for Apache HttpClient-v4.1
+- Changed code to redirect unauthenticated serving requests to the authentication servlet
+
+Version 2.3.1
+- Changed SAML requests parsing comply with the XML namespaces the GSA 6.10 utilizes
+- Don't register an artifact for SAML Post Binding
+- Changed the way artifact is built to avoid duplicate artifact (for artifact binding)
+- Added a Charset recognition static method the SAMLSPIServlet
+- During authNn created a Cookie where the IssueInstant is stored in order to build NotBefore and NotOnOrAfter from this date instead of the GSP machine date (to avoid time sync problems).
+- Added a servlet to reload configuration
+
+Version 2.4
+- Added support for several GroupRetrievers
+- Removed possibility to configure a Class name in Authentication section or in Mapper section. All processes must target a Repository.
+- Changed interfaces names and methods signatures
+
+Version 2.4.1
+- Added possibility to redirect to another page than login.html (CG44 SSO robot needs a JSP page that sets cookies again)
+- Created class: AuthNStrings that contains all static Strings
+
+Version 2.4.2
+- Created the IInitializable interface for repositories that need to load information as soon as Tomcat starts up.
+
+Version 2.4.2.1
+- Added header Cache-Control: no-cache to the auto-post binding form page to inform users re-posting SAML authentication message will fail.
+
+Version 2.4.2.2
+- Added placeholder to login page form.
+- Added cache control classes (for repositories that need to preload user and groups information and save it to cache).
+- Let redirect/post binding page redirect to the GSA using the same protocol as the GSP does (http or https).
+- Changed HTML page to HTML5 (and UTF-8).
+
+Version 2.5 BETA
+- Added partial support of connector SPI. Currently only Authentication via connector SPI Works
+- List of things needed for full support:
+	-Authorization servlet
+	-Edit and save config servlet
+	-Set log level (connector and feed) servlets
+
+Version 2.5.0
+- Optimized SAML response construction
+- Fixed bug with non-utf8 characters
+- Made sword.gsa.spi.connector.servlet.Authenticate extend sword.gsa.spi.saml.authN.servlet.GAuthNService in order to reuse getUserGroups and addPrincipalMappings methods
+
+Version 2.6.0
+- Added use of Annotations to get the connectors configuration parameters list
+
+Version 2.6.1
+- Added Connector SPI authentication for all repositories at once
+- Added support for group namespaces
+- Added modifier to tell the GSP whether it runs in legacy ACL mode or in GSAv7 ACL mode
+
+Version 3.0
+- Compatibility release (swCryptoUtils version >= 5.0)
+- Changed web deployment descriptors to servlet spec 3.0
+
+Version 3.0.1
+- Fixed GSA v7.0 namespaces are not added when using connector authentication in Group lookup only mode (password=null)
+
+Version 3.0.2
+- Let ACL namespace default to "" in "Legacy ACL" mode, let it default to "Default" in standard v7 ACL mode
+- Added the possibility to use the entire GSP as a Google SPI connector in "Group retrieval only" mode (was only working for authentication)
+
+Version 3.0.3
+- Bug fix: Configuring multivalued fields form the GSA was encrypting mandatory fields and not encrypted one
+
+Version 3.0.4
+- Changed Tomcat resource (from zip archive to actual folder tree)
+
+Version 3.0.5
+- Added Shutdown hooks to allow to close resources when Tomcat restarts
+
+Version 3.0.6
+- Added support for external delegated authentication (OpenID)
+
+Version 3.0.7
+- Added -D switch to change the SAML SPI main connector default name
+
+Version 4.0
+- Many changes

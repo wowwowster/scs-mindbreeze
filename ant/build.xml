@@ -1,0 +1,1402 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE project>
+<project name="SCS" default="all" basedir=".." >
+
+	<input addproperty="option.compiler.debug" validargs="on,off" message="Build for DEBUG" defaultvalue="off" />
+	<condition property="option.compiler.debuglvl" value="lines,vars,source">
+		<equals arg1="${option.compiler.debug}" arg2="on" />
+	</condition>
+	<condition property="option.compiler.debuglvl" value="none">
+		<not><equals arg1="${option.compiler.debug}" arg2="on" /></not>
+	</condition>
+	<echo message="Using compiler options: ${option.compiler.debug} / ${option.compiler.debuglvl}"></echo>
+
+    <property name="name.proj.constants" value="Constants" />
+    <property name="name.proj.svc-mgr" value="Utils - Service Manager" />
+    <property name="name.proj.lic-mgr" value="Utils - License Manager" />
+    <property name="name.proj.setup" value="Utils - Setup" />
+    <property name="name.proj.installer" value="Utils - Installer" />
+    <property name="name.proj.kerberos" value="Utils - Krb5" />
+    <property name="name.proj.scs.core" value="Core" />
+    <property name="name.proj.connector.alfresco" value="Connector - AlfrescoREST" />
+    <property name="name.proj.connector.confluence" value="Connector - Confluence" />
+    <property name="name.proj.connector.drupal" value="Connector - Drupal" />
+    <property name="name.proj.connector.eroom" value="Connector - eRoom" />
+    <property name="name.proj.connector.ez" value="Connector - eZ publish" />
+    <property name="name.proj.connector.ezdb" value="Connector - eZ publishDB" />
+    <property name="name.proj.connector.gapps" value="Connector - Google Apps" />
+    <property name="name.proj.connector.gdrive" value="Connector - Google Drive" />
+	<property name="name.proj.connector.gdirectory" value="Connector - Google Directory" />
+    <property name="name.proj.connector.goauth" value="Connector - Google OAuth2" />
+    <property name="name.proj.connector.gsites" value="Connector - Google Sites" />
+    <property name="name.proj.connector.jira" value="Connector - Jira" />
+    <property name="name.proj.connector.jive" value="Connector - Jive" />
+    <property name="name.proj.connector.jlb" value="Connector - JBL-Net" />
+    <property name="name.proj.connector.ldap" value="Connector - LDAP" />
+    <property name="name.proj.connector.ldap.group.checker" value="Connector - LdapGroupChecker" />
+    <property name="name.proj.connector.moauth" value="Connector - Microsoft OAuth" />
+	<property name="name.proj.connector.moodle" value="Connector - Moodle" />
+	<property name="name.proj.connector.onedrive" value="Connector - OneDrive" />
+	<property name="name.proj.connector.pos" value="Connector - POS" />
+    <property name="name.proj.connector.prisma" value="Connector - Prisma" />
+    <property name="name.proj.connector.regex" value="Connector - RegExp" />
+    <property name="name.proj.connector.salesforce" value="Connector - SalesForce" />
+	<!-- ajout -->
+	<property name="name.proj.connector.servicenow" value="Connector - Service-Now" />
+	<!-- fin ajout -->
+	<property name="name.proj.connector.sharepoint" value="Connector - Sharepoint Online" />
+    <property name="name.proj.connector.sql" value="Connector - SQL" />
+    <property name="name.proj.connector.youtube" value="Connector - Youtube" />
+    
+	
+	<property environment="env"/>
+	
+	<loadproperties srcFile="${basedir}/ant/ant.properties"/>
+	
+	<target name="all" depends="constants, svc-manager, lic-manager, kerberos, scs-setup, scs-core, connectors, scs-installer, scs-installer-windows, scs-installer-linux" />
+	
+	<target name="all-but-installer" depends="constants, svc-manager, lic-manager, kerberos, scs-setup, scs-core, connectors" />
+	
+	<target name="constants" >
+		
+		<delete dir="${basedir}/${name.proj.constants}/bin" />
+		<delete dir="${basedir}/${name.proj.constants}/dist" />
+		<mkdir dir="${basedir}/${name.proj.constants}/bin" />
+		<mkdir dir="${basedir}/${name.proj.constants}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.constants}/lib" id="fs.constants.dependency" includes="*.jar" />
+		
+		<path id="cp.constants.dependency" ><fileset refid="fs.constants.dependency" /></path>
+
+		<javac srcdir="${basedir}/${name.proj.constants}/src" destdir="${basedir}/${name.proj.constants}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.constants.dependency" />
+		</javac>
+		
+		<jar jarfile="${basedir}/${name.proj.constants}/dist/scs-constants.jar" >
+			<manifest>
+				<attribute name="Build-Version" value="1.0" />
+			</manifest>
+			<fileset dir="${basedir}/${name.proj.constants}/bin" includes="**/*.class" />
+		</jar>
+		
+		<copy todir="${basedir}/${name.proj.constants}/dist">
+			<fileset refid="fs.constants.dependency" />
+		</copy>
+		
+	</target>
+	
+	<target name="svc-manager" >
+		
+		<delete dir="${basedir}/${name.proj.svc-mgr}/bin" />
+		<delete dir="${basedir}/${name.proj.svc-mgr}/dist" />
+		<mkdir dir="${basedir}/${name.proj.svc-mgr}/bin" />
+		<mkdir dir="${basedir}/${name.proj.svc-mgr}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.constants}/lib" id="fs.constants.dependency" includes="swCryptoUtils.jar" />
+		
+		<path id="cp.svc-manager.dependency" ><fileset refid="fs.constants.dependency" /></path>
+
+		<javac srcdir="${basedir}/${name.proj.svc-mgr}/src" destdir="${basedir}/${name.proj.svc-mgr}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.svc-manager.dependency" />
+		</javac>
+		
+		<jar jarfile="${basedir}/${name.proj.svc-mgr}/dist/scs-svc-mgr.jar" >
+			<manifest>
+				<attribute name="Build-Version" value="1.0" />
+			</manifest>
+			<fileset dir="${basedir}/${name.proj.svc-mgr}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.svc-mgr}/src" includes="binaries/**/*" />
+		</jar>
+		
+	</target>
+	
+	<target name="lic-manager" >
+		
+		<delete dir="${basedir}/${name.proj.lic-mgr}/bin" />
+		<delete dir="${basedir}/${name.proj.lic-mgr}/dist" />
+		<mkdir dir="${basedir}/${name.proj.lic-mgr}/bin" />
+		<mkdir dir="${basedir}/${name.proj.lic-mgr}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.constants}/lib" id="fs.constants.dependency" includes="*.jar" />
+		
+		<path id="cp.lic-mgr.dependency" ><fileset refid="fs.constants.dependency" /></path>
+
+		<javac srcdir="${basedir}/${name.proj.lic-mgr}/src" destdir="${basedir}/${name.proj.lic-mgr}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.lic-mgr.dependency" />
+		</javac>
+		
+		<jar jarfile="${basedir}/${name.proj.lic-mgr}/dist/jackson-ext-2.2.3.jar" >
+			<manifest>
+				<attribute name="Build-Version" value="1.0" />
+			</manifest>
+			<fileset dir="${basedir}/${name.proj.lic-mgr}/bin" excludes="**/LicenseGenerator.class" includes="**/*.class" />
+		</jar>
+		
+	</target>
+	
+	<target name="scs-setup" depends="constants, svc-manager, lic-manager" >
+		
+		<delete dir="${basedir}/${name.proj.setup}/bin" />
+		<delete dir="${basedir}/${name.proj.setup}/dist" />
+		<mkdir dir="${basedir}/${name.proj.setup}/bin" />
+		<mkdir dir="${basedir}/${name.proj.setup}/dist" />
+
+		<fileset dir="${basedir}/${name.proj.constants}/dist" id="fs.constants.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.svc-mgr}/dist" id="fs.svc-manager.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.lic-mgr}/dist" id="fs.lic-manager.dependency" includes="*.jar" />
+		
+		<path id="cp.setup.dependency" >
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.svc-manager.dependency" />
+			<fileset refid="fs.lic-manager.dependency" />
+		</path>
+		<pathconvert property="ccp.setup.dependency" pathsep=" " dirsep="/" refid="cp.setup.dependency" ><mapper type="flatten" /></pathconvert>
+
+		<javac srcdir="${basedir}/${name.proj.setup}/src" destdir="${basedir}/${name.proj.setup}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.setup.dependency" />
+		</javac>
+		
+		<jar jarfile="${basedir}/${name.proj.setup}/dist/setup.jar" >
+			<manifest>
+				<attribute name="Build-Version" value="1.0" />
+				<attribute name="Class-Path" value=". ${ccp.setup.dependency}" />
+				<attribute name="Main-Class" value="com.sword.scs.setup.Bootstrap" />
+			</manifest>
+			<fileset dir="${basedir}/${name.proj.setup}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.setup}/src" excludes="**/*.java" />
+		</jar>
+		
+		<copy todir="${basedir}/${name.proj.setup}/dist">
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.svc-manager.dependency" />
+			<fileset refid="fs.lic-manager.dependency" />
+		</copy>
+		
+	</target>
+	
+	<target name="kerberos" >
+			
+		<delete dir="${basedir}/${name.proj.kerberos}/bin" />
+		<delete dir="${basedir}/${name.proj.kerberos}/dist" />
+		<mkdir dir="${basedir}/${name.proj.kerberos}/bin" />
+		<mkdir dir="${basedir}/${name.proj.kerberos}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/lib" id="fs.scs-webapp.dependency" includes="commons-codec-*.jar" />
+		
+		<path id="cp.kerberos.dependency" ><fileset refid="fs.scs-webapp.dependency" /></path>
+
+		<javac srcdir="${basedir}/${name.proj.kerberos}/src" destdir="${basedir}/${name.proj.kerberos}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.kerberos.dependency" />
+		</javac>
+		
+		<jar jarfile="${basedir}/${name.proj.kerberos}/dist/scs-kerberos.jar" >
+			<manifest>
+				<attribute name="Build-Version" value="1.0" />
+			</manifest>
+			<fileset dir="${basedir}/${name.proj.kerberos}/bin" includes="**/*.class" />
+		</jar>
+		
+	</target>
+	
+	<target name="scs-core" depends="constants, kerberos, lic-manager" >
+
+		<delete dir="${basedir}/${name.proj.scs.core}/bin" />
+		<delete dir="${basedir}/${name.proj.scs.core}/dist" />
+		<mkdir dir="${basedir}/${name.proj.scs.core}/bin" />
+		<mkdir dir="${basedir}/${name.proj.scs.core}/dist" />
+
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/lib" id="fs.tomcat.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.constants}/dist" id="fs.constants.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.lic-mgr}/dist" id="fs.lic-manager.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.kerberos}/dist" id="fs.kerberos.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.scs.core}/lib" id="fs.scs-core.dependency" includes="*.jar httpclient/**/*.class httpclient/*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		
+		<path id="cp.scs-core.dependency" >
+			<fileset refid="fs.tomcat.dependency" />
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.lic-manager.dependency" />
+			<fileset refid="fs.kerberos.dependency" />
+			<fileset refid="fs.scs-core.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+		</path>
+		
+		<path id="cp.scs-core.dependency.run" >
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.lic-manager.dependency" />
+			<fileset refid="fs.kerberos.dependency" />
+			<fileset dir="${basedir}/${name.proj.scs.core}/lib" includes="*.jar" />
+			<fileset refid="fs.scs-webapp.dependency" />
+		</path>
+		<pathconvert property="ccp.core.dependency" pathsep=" " dirsep="/" refid="cp.scs-core.dependency.run" ><mapper type="flatten" /></pathconvert>
+
+		<javac srcdir="${basedir}/${name.proj.scs.core}/src" destdir="${basedir}/${name.proj.scs.core}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.scs-core.dependency" />
+		</javac>
+		
+		<jar jarfile="${basedir}/${name.proj.scs.core}/dist/scs-core.jar" >
+			<manifest>
+				<attribute name="Build-Version" value="4.0" />
+				<attribute name="Class-Path" value=". ${ccp.core.dependency}" />
+				<attribute name="Main-Class" value="com.sword.gsa.spis.scs.push.PushInitializer" />
+			</manifest>
+			<fileset dir="${basedir}/${name.proj.scs.core}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.scs.core}/src" excludes="**/*.java" />
+		</jar>
+		
+		<copy todir="${basedir}/${name.proj.scs.core}/dist">
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.lic-manager.dependency" />
+			<fileset refid="fs.kerberos.dependency" />
+			<fileset refid="fs.scs-core.dependency" />
+		</copy>
+		
+	</target>
+	
+	<target name="alfresco" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.alfresco}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.alfresco}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.alfresco}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.alfresco}/dist" />
+
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.alfresco}/lib" id="fs.alfresco.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.alfresco.dependency" >
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.alfresco.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.alfresco}/src" destdir="${basedir}/${name.proj.connector.alfresco}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.alfresco.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.alfresco}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.alfresco}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.alfresco}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.alfresco}/dist/lib">
+			<fileset refid="fs.alfresco.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.alfresco}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.alfresco}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="confluence" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.confluence}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.confluence}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.confluence}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.confluence}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.confluence}/lib" id="fs.confluence.dependency" includes="*.jar" />
+		
+		<path id="cp.confluence.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.confluence.dependency" />
+		</path>
+
+		<javac destdir="${basedir}/${name.proj.connector.confluence}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<src path="${basedir}/${name.proj.connector.confluence}/src.soap.stubs.5.6.x"/>
+			<src path="${basedir}/${name.proj.connector.confluence}/src"/>
+			<classpath refid="cp.confluence.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.confluence}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.confluence}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.confluence}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.confluence}/dist/lib">
+			<fileset refid="fs.confluence.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.confluence}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.confluence}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+		<target name="drupal" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.drupal}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.drupal}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.drupal}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.drupal}/dist" />
+
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.drupal}/lib" id="fs.drupal.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.drupal.dependency" >
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.drupal.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.drupal}/src" destdir="${basedir}/${name.proj.connector.drupal}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.drupal.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.drupal}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.drupal}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.drupal}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.drupal}/dist/lib">
+			<fileset refid="fs.drupal.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.drupal}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.drupal}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="eroom" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.eroom}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.eroom}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.eroom}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.eroom}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.eroom}/lib" id="fs.eroom.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="commons-codec-*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.eroom.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.eroom.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.eroom}/src" destdir="${basedir}/${name.proj.connector.eroom}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.eroom.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.eroom}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.eroom}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.eroom}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.eroom}/dist/lib">
+			<fileset refid="fs.eroom.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.eroom}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.eroom}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="ez" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.ez}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.ez}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.ez}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.ez}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.ez}/lib" id="fs.ez.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.ez.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.ez.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.ez}/src" destdir="${basedir}/${name.proj.connector.ez}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.ez.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.ez}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.ez}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.ez}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.ez}/dist/lib">
+			<fileset refid="fs.ez.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.ez}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.ez}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="ezdb" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.ezdb}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.ezdb}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.ezdb}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.ezdb}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.ezdb}/lib" id="fs.ezdb.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.ezdb.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.ezdb.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.ezdb}/src" destdir="${basedir}/${name.proj.connector.ezdb}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.ezdb.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.ezdb}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.ezdb}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.ezdb}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.ezdb}/dist/lib">
+			<fileset refid="fs.ezdb.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.ezdb}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.ezdb}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="google-api-wrap" >
+
+		<delete dir="${basedir}/ThirdParty - GoogleAPIWrap/bin" />
+		<delete dir="${basedir}/ThirdParty - GoogleAPIWrap/dist" />
+		<mkdir dir="${basedir}/ThirdParty - GoogleAPIWrap/bin" />
+		<mkdir dir="${basedir}/ThirdParty - GoogleAPIWrap/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.constants}/lib" id="fs.constants.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - GoogleAPIWrap/lib" id="fs.apiwrap.dependency" includes="*.jar" />
+		
+		<path id="cp.apiwrap.dependency" >
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.apiwrap.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/ThirdParty - GoogleAPIWrap/src" destdir="${basedir}/ThirdParty - GoogleAPIWrap/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.apiwrap.dependency" />
+		</javac>
+		
+		<jar destfile="${basedir}/ThirdParty - GoogleAPIWrap/dist/GoogleAPIWrap.jar">
+			<manifest>
+				<attribute name="Build-Version" value="1.0" />
+			</manifest>
+			<fileset dir="${basedir}/ThirdParty - GoogleAPIWrap/bin" includes="**/*.class" />
+		</jar>
+		
+		<copy todir="${basedir}/ThirdParty - GoogleAPIWrap/dist">
+			<fileset refid="fs.apiwrap.dependency" />
+		</copy>
+			
+	</target>
+	
+	<target name="gapps" depends="scs-core, google-api-wrap" >
+
+		<delete dir="${basedir}/${name.proj.connector.gapps}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.gapps}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.gapps}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.gapps}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - GoogleAPIWrap/dist" id="fs.gapps.dependency" includes="*.jar" />
+		
+		<path id="cp.gapps.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.gapps.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.gapps}/src" destdir="${basedir}/${name.proj.connector.gapps}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.gapps.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.gapps}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.gapps}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.gapps}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gapps}/dist/lib">
+			<fileset refid="fs.gapps.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gapps}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.gapps}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="gdirectory" depends="scs-core, google-api-wrap" >
+
+		<delete dir="${basedir}/${name.proj.connector.gdirectory}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.gdirectory}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.gdirectory}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.gdirectory}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - GoogleAPIWrap/dist" id="fs.gapps.dependency" includes="*.jar" />
+		
+		<path id="cp.gapps.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.gapps.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.gdirectory}/src" destdir="${basedir}/${name.proj.connector.gdirectory}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.gapps.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.gdirectory}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.gdirectory}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.gdirectory}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gdirectory}/dist/lib">
+			<fileset refid="fs.gapps.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gdirectory}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.gdirectory}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="gdrive" depends="scs-core, google-api-wrap" >
+
+		<delete dir="${basedir}/${name.proj.connector.gdrive}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.gdrive}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.gdrive}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.gdrive}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - GoogleAPIWrap/dist" id="fs.gapps.dependency" includes="*.jar" />
+		
+		<path id="cp.gapps.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.gapps.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.gdrive}/src" destdir="${basedir}/${name.proj.connector.gdrive}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.gapps.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.gdrive}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.gdrive}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.gdrive}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gdrive}/dist/lib">
+			<fileset refid="fs.gapps.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gdrive}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.gdrive}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="goauth2" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.goauth}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.goauth}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.goauth}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.goauth}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/lib" id="fs.tomcat.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.goauth}/lib" id="fs.goauth.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.goauth.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.tomcat.dependency" />
+			<fileset refid="fs.scs.dependency" />
+			<fileset refid="fs.goauth.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.goauth}/src" destdir="${basedir}/${name.proj.connector.goauth}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.goauth.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.goauth}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.goauth}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.goauth}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.goauth}/dist/lib">
+			<fileset refid="fs.goauth.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+			
+	</target>
+	
+	<target name="gsites" depends="scs-core, google-api-wrap" >
+
+		<delete dir="${basedir}/${name.proj.connector.gsites}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.gsites}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.gsites}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.gsites}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - GoogleAPIWrap/dist" id="fs.gapps.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.gsites}/lib" id="fs.local.dependency" includes="*.jar" />
+		
+		<path id="cp.gapps.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.gapps.dependency" />
+			<fileset refid="fs.local.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.gsites}/src" destdir="${basedir}/${name.proj.connector.gsites}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.gapps.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.gsites}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.gsites}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.gsites}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gsites}/dist/lib">
+			<fileset refid="fs.gapps.dependency" />
+			<fileset refid="fs.local.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.gsites}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.gsites}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="jlb" depends="scs-core" >
+
+			<delete dir="${basedir}/${name.proj.connector.jlb}/bin" />
+			<delete dir="${basedir}/${name.proj.connector.jlb}/dist" />
+			<mkdir dir="${basedir}/${name.proj.connector.jlb}/bin" />
+			<mkdir dir="${basedir}/${name.proj.connector.jlb}/dist" />
+			
+			<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/${name.proj.connector.jlb}/lib" id="fs.jlb.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+			
+			<path id="cp.jlb.dependency" >
+				<fileset refid="fs.core.dependency" />
+				<fileset refid="fs.jlb.dependency" />
+				<fileset refid="fs.scs-webapp.dependency" />
+				<fileset refid="fs.sword.httpclient.dependency" />
+			</path>
+
+			<javac srcdir="${basedir}/${name.proj.connector.jlb}/src" destdir="${basedir}/${name.proj.connector.jlb}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+				<classpath refid="cp.jlb.dependency" />
+			</javac>
+			
+			<copy todir="${basedir}/${name.proj.connector.jlb}/dist/classes">
+				<fileset dir="${basedir}/${name.proj.connector.jlb}/bin" includes="**/*.class" />
+				<fileset dir="${basedir}/${name.proj.connector.jlb}/src" excludes="**/*.java" />
+			</copy>
+			
+			<copy todir="${basedir}/${name.proj.connector.jlb}/dist/lib">
+				<fileset refid="fs.jlb.dependency" />
+				<fileset refid="fs.sword.httpclient.dependency" />
+			</copy>
+			
+			<copy todir="${basedir}/${name.proj.connector.jlb}/dist">
+				<fileset dir="${basedir}/${name.proj.connector.jlb}/resources" includes="**/*" />
+			</copy>
+				
+		</target>
+	
+	<target name="jira" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.jira}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.jira}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.jira}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.jira}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.jira}/lib" id="fs.jira.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		
+		<path id="cp.jira.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.jira.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.jira}/src" destdir="${basedir}/${name.proj.connector.jira}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.jira.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.jira}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.jira}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.jira}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.jira}/dist/lib">
+			<fileset refid="fs.jira.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.jira}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.jira}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="jive" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.jive}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.jive}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.jive}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.jive}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.jive}/lib" id="fs.jive.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.jive.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.jive.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.jive}/src" destdir="${basedir}/${name.proj.connector.jive}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.jive.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.jive}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.jive}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.jive}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.jive}/dist/lib">
+			<fileset refid="fs.jive.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.jive}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.jive}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="ldap" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.ldap}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.ldap}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.ldap}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.ldap}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		
+		<path id="cp.ldap.dependency" >
+			<fileset refid="fs.core.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.ldap}/src" destdir="${basedir}/${name.proj.connector.ldap}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.ldap.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.ldap}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.ldap}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.ldap}/src" excludes="**/*.java" />
+		</copy>
+			
+	</target>
+	
+	<target name="ldap-group-checker" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.ldap.group.checker}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.ldap.group.checker}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.ldap.group.checker}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.ldap.group.checker}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		
+		<path id="cp.ldap.dependency" >
+			<fileset refid="fs.core.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.ldap.group.checker}/src" destdir="${basedir}/${name.proj.connector.ldap.group.checker}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.ldap.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.ldap.group.checker}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.ldap.group.checker}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.ldap.group.checker}/src" excludes="**/*.java" />
+		</copy>
+			
+	</target>
+	
+	<target name="moauth" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.moauth}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.moauth}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.moauth}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.moauth}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/lib" id="fs.tomcat.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.moauth}/lib" id="fs.moauth.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.moauth.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.tomcat.dependency" />
+			<fileset refid="fs.scs.dependency" />
+			<fileset refid="fs.moauth.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.moauth}/src" destdir="${basedir}/${name.proj.connector.moauth}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.moauth.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.moauth}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.moauth}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.moauth}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.moauth}/dist/lib">
+			<fileset refid="fs.moauth.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+			
+	</target>
+	
+	<target name="moodle" depends="scs-core" >
+
+			<delete dir="${basedir}/${name.proj.connector.moodle}/bin" />
+			<delete dir="${basedir}/${name.proj.connector.moodle}/dist" />
+			<mkdir dir="${basedir}/${name.proj.connector.moodle}/bin" />
+			<mkdir dir="${basedir}/${name.proj.connector.moodle}/dist" />
+			
+			<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/lib" id="fs.tomcat.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/${name.proj.connector.moodle}/lib" id="fs.moodle.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+			
+			<path id="cp.moodle.dependency" >
+				<fileset refid="fs.core.dependency" />
+				<fileset refid="fs.tomcat.dependency" />
+				<fileset refid="fs.scs.dependency" />
+				<fileset refid="fs.moodle.dependency" />
+				<fileset refid="fs.sword.httpclient.dependency" />
+			</path>
+
+			<javac srcdir="${basedir}/${name.proj.connector.moodle}/src" destdir="${basedir}/${name.proj.connector.moodle}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+				<classpath refid="cp.moodle.dependency" />
+			</javac>
+			
+			<copy todir="${basedir}/${name.proj.connector.moodle}/dist/classes">
+				<fileset dir="${basedir}/${name.proj.connector.moodle}/bin" includes="**/*.class" />
+				<fileset dir="${basedir}/${name.proj.connector.moodle}/src" excludes="**/*.java" />
+			</copy>
+			
+			<copy todir="${basedir}/${name.proj.connector.moodle}/dist/lib">
+				<fileset refid="fs.moodle.dependency" />
+				<fileset refid="fs.sword.httpclient.dependency" />
+			</copy>
+				
+		</target>
+	
+	<target name="onedrive" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.onedrive}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.onedrive}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.onedrive}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.onedrive}/dist" />
+
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.onedrive}/lib" id="fs.onedrive.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.onedrive.dependency" >
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.onedrive.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.onedrive}/src" destdir="${basedir}/${name.proj.connector.onedrive}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.onedrive.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.onedrive}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.onedrive}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.onedrive}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.onedrive}/dist/lib">
+			<fileset refid="fs.onedrive.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.onedrive}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.onedrive}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="pos" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.pos}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.pos}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.pos}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.pos}/dist" />
+
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.pos}/lib" id="fs.pos.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.pos.dependency" >
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.pos.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.pos}/src" destdir="${basedir}/${name.proj.connector.pos}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.pos.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.pos}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.pos}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.pos}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.pos}/dist/lib">
+			<fileset refid="fs.pos.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.pos}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.pos}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="prisma" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.prisma}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.prisma}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.prisma}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.prisma}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.prisma}/lib" id="fs.prisma.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="commons-codec-*.jar" />
+		
+		<path id="cp.prisma.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.prisma.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.prisma}/src" destdir="${basedir}/${name.proj.connector.prisma}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.prisma.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.prisma}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.prisma}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.prisma}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.prisma}/dist/lib">
+			<fileset dir="${basedir}/${name.proj.connector.prisma}/lib" includes="**/*.jar" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.prisma}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.prisma}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="regex" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.regex}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.regex}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.regex}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.regex}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		
+		<path id="cp.regex.dependency" >
+			<fileset refid="fs.core.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.regex}/src" destdir="${basedir}/${name.proj.connector.regex}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.regex.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.regex}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.regex}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.regex}/src" excludes="**/*.java" />
+		</copy>
+			
+	</target>
+	
+	<target name="salesforce" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.salesforce}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.salesforce}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.salesforce}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.salesforce}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.salesforce}/lib" id="fs.salesforce.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="commons-codec-*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.salesforce.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.salesforce.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.salesforce}/src" destdir="${basedir}/${name.proj.connector.salesforce}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.salesforce.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.salesforce}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.salesforce}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.salesforce}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.salesforce}/dist/lib">
+			<fileset dir="${basedir}/${name.proj.connector.salesforce}/lib" includes="**/*.jar" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.salesforce}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.salesforce}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<!-- ajout -->
+	<target name="servicenow" depends="scs-core" >
+
+			<delete dir="${basedir}/${name.proj.connector.servicenow}/bin" />
+			<delete dir="${basedir}/${name.proj.connector.servicenow}/dist" />
+			<mkdir dir="${basedir}/${name.proj.connector.servicenow}/bin" />
+			<mkdir dir="${basedir}/${name.proj.connector.servicenow}/dist" />
+			
+			<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/${name.proj.connector.servicenow}/lib" id="fs.servicenow.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+			<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+			
+			<path id="cp.servicenow.dependency" >
+				<fileset refid="fs.core.dependency" />
+				<fileset refid="fs.servicenow.dependency" />
+				<fileset refid="fs.scs-webapp.dependency" />
+				<fileset refid="fs.sword.httpclient.dependency" />
+			</path>
+
+			<javac destdir="${basedir}/${name.proj.connector.servicenow}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+				<src path="${basedir}/${name.proj.connector.servicenow}/src"/>
+				<classpath refid="cp.servicenow.dependency" />
+			</javac>
+			
+			<copy todir="${basedir}/${name.proj.connector.servicenow}/dist/classes">
+				<fileset dir="${basedir}/${name.proj.connector.servicenow}/bin" includes="**/*.class" />
+				<fileset dir="${basedir}/${name.proj.connector.servicenow}/src" excludes="**/*.java" />
+			</copy>
+			
+			<copy todir="${basedir}/${name.proj.connector.servicenow}/dist/lib">
+				<fileset refid="fs.servicenow.dependency" />
+				<fileset refid="fs.sword.httpclient.dependency" />
+			</copy>
+			
+			<copy todir="${basedir}/${name.proj.connector.servicenow}/dist">
+				<fileset dir="${basedir}/${name.proj.connector.servicenow}/resources" includes="**/*" />
+			</copy>
+				
+		</target>
+	<!-- fin ajout -->
+	
+	<target name="sharepoint" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.sharepoint}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.sharepoint}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.sharepoint}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.sharepoint}/dist" />
+
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.sharepoint}/lib" id="fs.sharepoint.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - SwordHttpClient" id="fs.sword.httpclient.dependency" includes="*.jar" />
+		
+		<path id="cp.sharepoint.dependency" >
+			<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.sharepoint.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.sharepoint}/src" destdir="${basedir}/${name.proj.connector.sharepoint}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.sharepoint.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.sharepoint}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.sharepoint}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.sharepoint}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.sharepoint}/dist/lib">
+			<fileset refid="fs.sharepoint.dependency" />
+			<fileset refid="fs.sword.httpclient.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.sharepoint}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.sharepoint}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="sql" depends="scs-core" >
+
+		<delete dir="${basedir}/${name.proj.connector.sql}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.sql}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.sql}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.sql}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.sql}/lib" id="fs.sql.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="commons-codec-*.jar" />
+		
+		<path id="cp.sql.dependency" >
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.sql.dependency" />
+			<fileset refid="fs.scs-webapp.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.sql}/src" destdir="${basedir}/${name.proj.connector.sql}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.sql.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.sql}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.sql}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.sql}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.sql}/dist/lib">
+			<fileset dir="${basedir}/${name.proj.connector.sql}/lib" includes="**/*.jar" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.sql}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.sql}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="youtube" depends="scs-core, google-api-wrap" >
+
+		<delete dir="${basedir}/${name.proj.connector.youtube}/bin" />
+		<delete dir="${basedir}/${name.proj.connector.youtube}/dist" />
+		<mkdir dir="${basedir}/${name.proj.connector.youtube}/bin" />
+		<mkdir dir="${basedir}/${name.proj.connector.youtube}/dist" />
+		
+		<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat/webapps/SCS/WEB-INF/lib" id="fs.scs-webapp.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.scs.core}/dist" id="fs.core.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/ThirdParty - GoogleAPIWrap/dist" id="fs.gapps.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.connector.youtube}/lib" id="fs.local.dependency" includes="*.jar" />
+		
+		<path id="cp.gapps.dependency" >
+		<fileset refid="fs.scs-webapp.dependency" />
+			<fileset refid="fs.core.dependency" />
+			<fileset refid="fs.gapps.dependency" />
+			<fileset refid="fs.local.dependency" />
+		</path>
+
+		<javac srcdir="${basedir}/${name.proj.connector.youtube}/src" destdir="${basedir}/${name.proj.connector.youtube}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.gapps.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.connector.youtube}/dist/classes">
+			<fileset dir="${basedir}/${name.proj.connector.youtube}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/${name.proj.connector.youtube}/src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.youtube}/dist/lib">
+			<fileset refid="fs.gapps.dependency" />
+			<fileset refid="fs.local.dependency" />
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.connector.youtube}/dist">
+			<fileset dir="${basedir}/${name.proj.connector.youtube}/resources" includes="**/*" />
+		</copy>
+			
+	</target>
+	
+	<target name="connectors" depends="alfresco, confluence, drupal, eroom, ez, ezdb, gapps, gdirectory, gdrive, goauth2, gsites, jira, jive, ldap, ldap-group-checker, moauth, moodle, onedrive, pos, prisma, regex, salesforce, servicenow, sharepoint, sql, youtube" />
+	
+	<target name="scs-installer" depends="constants, svc-manager" >
+
+		<!-- Request target plateform -->
+		<input 
+			addproperty="target.plateform" 
+			validargs="windows,linux" 
+			message="Target Plateform" defaultvalue="windows" 
+		/>
+		<!-- Request arch -->
+		<input 
+			addproperty="target.arch" 
+			validargs="x64,x86" 
+			message="Target Arch" defaultvalue="x64" 
+		/>
+		
+		<condition property="is.linux" >
+			<equals arg1="${target.plateform}" arg2="linux"/>
+		</condition>
+		
+		<delete dir="${basedir}/${name.proj.installer}/bin" />
+		<delete dir="${basedir}/${name.proj.installer}/dist" />
+		<delete dir="${basedir}/${name.proj.installer}/temp" />
+		<mkdir dir="${basedir}/${name.proj.installer}/bin" />
+		<mkdir dir="${basedir}/${name.proj.installer}/dist" />
+		<mkdir dir="${basedir}/${name.proj.installer}/dist/bin" />
+		<mkdir dir="${basedir}/${name.proj.installer}/dist/jdk" />
+		<mkdir dir="${basedir}/${name.proj.installer}/temp" />
+
+		<fileset dir="${basedir}/${name.proj.constants}/dist" id="fs.constants.dependency" includes="*.jar" />
+		<fileset dir="${basedir}/${name.proj.svc-mgr}/dist" id="fs.svc-mgr.dependency" includes="*.jar" />
+		
+		<path id="cp.installer.dependency" >
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.svc-mgr.dependency" />
+		</path>
+		<pathconvert property="ccp.installer.dependency" pathsep=" " dirsep="/" refid="cp.installer.dependency" ><mapper type="flatten" /></pathconvert>
+
+		<javac srcdir="${basedir}/${name.proj.installer}/src" destdir="${basedir}/${name.proj.installer}/bin" source="${source.version}" target="${compiled.version}" debug="${option.compiler.debug}" debuglevel="${option.compiler.debuglvl}" includeantruntime="false" >
+			<classpath refid="cp.installer.dependency" />
+		</javac>
+		
+		<copy todir="${basedir}/${name.proj.installer}/temp" includeemptydirs="yes" >
+			<fileset dir="${basedir}/${name.proj.installer}/resources/tomcat" excludes="**/.svn/** **/*.scc"/>
+		</copy>
+		<tstamp>
+			<format property="date.now" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+		<echo file="${basedir}/${name.proj.installer}/temp/scs/bin/buildinfo" message="build.date=${date.now}&#x0A;" />
+		<copy todir="${basedir}/${name.proj.installer}/temp/webapps/SCS/WEB-INF/lib" >
+			<fileset dir="${basedir}/${name.proj.scs.core}/dist" includes="*.jar httpclient/**/*.class httpclient/*.jar"/>
+		</copy>
+		<copy todir="${basedir}/${name.proj.installer}/temp/scs/bin" includeemptydirs="yes" >
+			<fileset dir="${basedir}/${name.proj.setup}/dist" excludes="**/.svn/** **/*.scc"/>
+		</copy>
+		
+		<java classname="com.sword.scs.building.utils.ConnectorDistribCopier" classpath="${basedir}/ant ui/bin;${basedir}/Constants/lib/swStaticUtils.jar" fork="true" >
+			<arg value="${basedir}"/>
+		</java>
+
+		<zip destfile="${basedir}/${name.proj.installer}/bin/binary/SCS">
+			<zipfileset dir="${basedir}/${name.proj.installer}/temp" >
+				<exclude name="**/.svn/**"/>
+				<exclude name="**/*.scc"/>
+			</zipfileset>
+		</zip>
+		
+		<jar jarfile="${basedir}/${name.proj.installer}/dist/bin/installer.jar" >
+			<manifest>
+				<attribute name="Build-Version" value="1.0" />
+				<attribute name="Class-Path" value=". ${ccp.installer.dependency}" />
+				<attribute name="Main-Class" value="com.sword.scs.installer.Bootstrap" />
+			</manifest>
+			<fileset dir="${basedir}/${name.proj.installer}/bin" >
+				<include name="**/*.class" />
+				<include name="binary/SCS" />
+			</fileset>
+			<fileset dir="${basedir}/${name.proj.installer}/src" excludes="**/*.java **/.svn/** **/*.scc" />
+		</jar>
+		
+		<copy todir="${basedir}/${name.proj.installer}/dist" includeemptydirs="yes" >
+			<fileset dir="${basedir}/${name.proj.installer}/resources/scripts" excludes="**/.svn/** **/*.scc"/>
+		</copy>
+		
+		<copy todir="${basedir}/${name.proj.installer}/dist/bin" >
+			<fileset refid="fs.constants.dependency" />
+			<fileset refid="fs.svc-mgr.dependency" />
+		</copy>
+		
+		<mkdir dir="${basedir}/${name.proj.installer}/dist/documentation"/>
+		<copy todir="${basedir}/${name.proj.installer}/dist/documentation" includeemptydirs="yes" >
+			<fileset dir="${basedir}/${name.proj.installer}/temp/webapps/documentation" excludes="**/.svn/** **/*.scc META-INF/** WEB-INF/**"/>
+		</copy>
+
+		<delete dir="${basedir}/${name.proj.installer}/temp" failonerror="no" />
+		
+	</target>
+	
+	<target name="scs-installer-windows" depends="scs-installer" unless="is.linux" >
+
+		<unzip dest="${basedir}/${name.proj.installer}/dist/jdk" src="${basedir}/${name.proj.installer}/resources/jdk/${target.arch}/${target.plateform}/jdk.zip" />
+		
+	</target>
+	
+	<target name="scs-installer-linux" depends="scs-installer" if="is.linux">
+		
+		<copy todir="${basedir}/${name.proj.installer}/dist/jdk" file="${basedir}/${name.proj.installer}/resources/jdk/${target.arch}/${target.plateform}/jdk.tar.gz" />
+		
+		<tar destfile="${basedir}/${name.proj.installer}/dist/scs-installer.tar.gz" compression="gzip" longfile="fail">
+			<tarfileset dir="${basedir}/${name.proj.installer}/dist" filemode="744" >
+				<include name="**/*.sh"/>
+				<exclude name="**/.svn/**"/>
+				<exclude name="**/*.scc"/>
+				<exclude name="documentation/*"/>
+				<exclude name="documentation/**"/>
+			</tarfileset>
+			<tarfileset dir="${basedir}/${name.proj.installer}/dist" >
+				<exclude name="**/*.sh"/>
+				<exclude name="**/.svn/**"/>
+				<exclude name="**/*.scc"/>
+				<exclude name="documentation/*"/>
+				<exclude name="documentation/**"/>
+			</tarfileset>
+		</tar>
+		
+		<delete>
+			<fileset dir="${basedir}/${name.proj.installer}/dist">
+				<include name="**/*"/>
+				<exclude name="scs-installer.tar.gz"/>
+				<exclude name="documentation/*"/>
+				<exclude name="documentation/**"/>
+			</fileset>
+		</delete>
+		
+	</target>
+	
+
+</project>

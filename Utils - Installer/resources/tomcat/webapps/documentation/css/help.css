@@ -1,0 +1,46 @@
+* {font-family: arial,helvetica,sans-serif}
+body {font-size: 12px; color: #045588; background-color: white; min-height: 120px; min-width: 600px}
+img {border: none}
+
+a:not(.LinkRef) {color:rgb(113,112,115); text-decoration:underline}
+a:visited:not(.LinkRef) {color:rgb(113,112,115); text-decoration:underline}  /* visited link */
+a:hover:not(.LinkRef) {color: #045588; cursor: pointer}
+
+#header {height: 160px; width: 100%; background-color: white; text-align: center; border-bottom: 1px solid #045588; padding-bottom: 12px}
+.HeaderImgLeft {float: left; width: 160px; height: 160px; 
+	background: transparent url('../img/swordconnect.png') no-repeat center center; background-size: contain }
+.HeaderImgRight {float: right; width: 160px; height: 160px; 
+	background: transparent url('../img/partner.png') no-repeat center center; background-size: contain }
+.HeaderText { font-size: 22px; margin: 0px 160px; padding-top: 80px; min-width: 280px }
+
+#body {width: 100%; margin-bottom: 45px; text-align: center}
+
+div.Nav {padding: 12px 0 0 8px}
+span.NavSeparator {padding: 0 6px}
+span.NavSelected {font-style: italic}
+
+#footer {position: fixed; bottom: 0; left: 0; height: 45px; width: 100%; background-color: white; text-align: center}
+#footer>.copy { height: 22px; margin-top: 23px }
+
+/* Help pages */
+.TOC0 {font-size: 15px; font-weight: bold}
+.TOC1 {font-size: 13px; font-weight: bold}
+.TOC2 {font-size: 12px; font-style: italic; padding-left: 12px}
+.TOC3 {font-size: 10px; padding-left: 24px}
+.Menu0, .Menu0>a {font-size: 18px}
+.Menu0 {padding: 8px 0 12px 24px}
+.Menu1, .Menu1>a {font-size: 16px}
+.Menu1 {padding: 16px 0 8px 8px}
+.Menu1Text {padding-left: 38px}
+.Menu2, .Menu2>a {font-size: 15px; font-style: italic}
+.Menu2Text {padding-left: 30px}
+.Menu0, .Menu1, .Menu2, .Menu3, .Menu0>a, .Menu1>a, .Menu2>a, .Menu3>a {color: black}
+
+.shellscript {color: black; font-style: italic}
+.boldit {font-weight: bold; font-style: italic}
+.egimg {margin: 6px 0px 18px 30px; padding: 3px; border: 1px solid #045588}
+.DefaultTable {border-collapse: collapse; margin: 6px 12px}
+.DefaultTable, .DefaultTable tr, .DefaultTable th, .DefaultTable td {border: 1px solid #045588}
+.DefaultTable th {font-weight: bold; text-align: center}
+.DefaultTable th, .DefaultTable td {padding: 3px}
+.DefaultTable td.left {text-align: right}

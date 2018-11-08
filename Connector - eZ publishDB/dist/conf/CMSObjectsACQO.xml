@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ObjDef xmlns="http://connect.sword-group.com/CMSObjects" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://connect.sword-group.com/CMSObjects EZPubObjects.xsd " >
+
+	<Docbase name="EZPublish" user="ezpublish" password="542883ea5b0517e2cc33894aa8c85b1720da7ea21f361eb0ad07bd08eb136f64">
+		<dbType>MySQL</dbType>
+		<connectionString>swpvezpub.parisgsa.lan:3306/ezpublish</connectionString>
+		<userDB>ezpublish</userDB>
+		<pwdDB>542883ea5b0517e2cc33894aa8c85b1720da7ea21f361eb0ad07bd08eb136f64</pwdDB>
+		<binaryFileLocation>\\\\swpvezpub.parisgsa.lan\\c$\\ezpub\\xampp\\htdocs\\ezpublish\\var\\ezwebin_site\\storage\\original\\application</binaryFileLocation>
+		<binaryTypes>file</binaryTypes>
+		<binaryTypesFormat>http://swpvezpub.parisgsa.lan/ezpublish/index.php/eng/content/download/{0}/{1}/version/{2}/file/{3}</binaryTypesFormat>
+		<indexSearchableOnly>true</indexSearchableOnly>
+	</Docbase>
+	<DocType Name="folder" UniqueID="1" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="folder" />
+		<!--Document infos-->
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="CurrentVersionmodified" />
+		<Attribute Name="published" Type="date" DisplayName="CurrentVersionPublished" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="path" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="user_group" UniqueID="3" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="user_group" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="user" UniqueID="4" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="user" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="comment" UniqueID="13" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="comment" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="common_ini_settings" UniqueID="14" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="common_ini_settings" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="template_look" UniqueID="15" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="template_look" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="article" UniqueID="16" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="article" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="LinksTo" TargetType="string">SELECT to_contentobject_id FROM `ezcontentobject_link` where from_contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="LinkedFrom" TargetType="string">SELECT from_contentobject_id FROM `ezcontentobject_link` where to_contentobject_id={0}</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<!--DocType Name="article_mainpage" UniqueID="17" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="article_mainpage" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+	
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<!--DocType Name="article_subpage" UniqueID="18" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="article_subpage" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<DocType Name="blog" UniqueID="17" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="blog" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="blog_post" UniqueID="18" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="blog_post" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="product" UniqueID="21" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="product" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="feedback_form" UniqueID="22" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="feedback_form" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="frontpage" UniqueID="23" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="frontpage" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="documentation_page" UniqueID="24" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="documentation_page" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<!--DocType Name="infobox" UniqueID="25" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="infobox" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<!--DocType Name="multicalendar" UniqueID="26" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="multicalendar" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<DocType Name="poll" UniqueID="25" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="poll" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="file" UniqueID="26" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="file" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="LinksTo" TargetType="string">SELECT to_contentobject_id FROM `ezcontentobject_link`where from_contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="LinkedFrom" TargetType="string">SELECT from_contentobject_id FROM `ezcontentobject_link`where to_contentobject_id={0}</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<!--DocType Name="flash" UniqueID="29" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="flash" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<DocType Name="image" UniqueID="27" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="image" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="link" UniqueID="28" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="link" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<!--DocType Name="quicktime" UniqueID="32" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="quicktime" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<!--DocType Name="windows_media" UniqueID="33" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="windows_media" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<DocType Name="real_video" UniqueID="37" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="real_video" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="gallery" UniqueID="29" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="gallery" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<!--DocType Name="geo_article" UniqueID="36" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="geo_article" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType-->
+	<DocType Name="forum" UniqueID="30" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="forum" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="forum_topic" UniqueID="31" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="forum_topic" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="forum_reply" UniqueID="32" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="forum_reply" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="event" UniqueID="33" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="event" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="event_calendar" UniqueID="34" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="event_calendar" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="banner" UniqueID="35" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="banner" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="forums" UniqueID="36" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="forums" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+	<DocType Name="silverlight" UniqueID="44" 
+			IdAttribute="id" ModifyDateAttribute="modified" >
+		<Constant Name="Source" Value="EZPublish" />
+		<Constant Name="Type" Value="silverlight" />
+		<Attribute Name="id" Type="string" DisplayName="Id" />	
+		<Attribute Name="owner_id" Type="string" DisplayName="owner_id" />
+		<Attribute Name="modified" Type="date" DisplayName="modified" />
+		<Attribute Name="published" Type="date" DisplayName="published" />	
+		<Attribute Name="current_version" Type="string" DisplayName="current_version" />
+		<Attribute Name="published" Type="string" DisplayName="published" />
+		<Attribute Name="contentclass_id" Type="string" DisplayName="contentclass_id" />
+		<Attribute Name="name" Type="string" DisplayName="name" />
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="className" TargetType="string">select name from ezcontentclass_name where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="contentclass_id" Type="string" DisplayName="groupName" TargetType="string">select group_name from ezcontentclass_classgroup where contentclass_id={0}</ForeignKey>
+		<ForeignKey Name="owner_id" Type="string" DisplayName="ownerName" TargetType="string">select login from ezuser where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="keyword" TargetType="string">select keyword from ezkeyword where id in (select  keyword_id from ezkeyword_attribute_link where objectattribute_id in (select id from  ezcontentobject_attribute where contentobject_id={0}))</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="PATH" TargetType="string">select path_identification_string from ezcontentobject_tree where contentobject_id={0}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="NODE" TargetType="string">select node_id from ezcontentobject_tree where contentobject_id={0} and node_id=main_node_id</ForeignKey>
+		<!--Version Infos-->
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreated" TargetType="date">select created from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionNumber" TargetType="string">select version from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionModified" TargetType="date">select modified from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreator" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionCreatorID" TargetType="string">select login from ezuser where contentobject_id in (select creator_id from ezcontentobject_version where contentobject_id={0} and version={1})</ForeignKey>
+		<ForeignKey Name="id" Type="string" DisplayName="VersionStatus" TargetType="string">select status from ezcontentobject_version where contentobject_id={0} and version={1}</ForeignKey>
+		
+	</DocType>
+</ObjDef>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="NOINDEX,NOFOLLOW" >
+	<title>Restarting SCS and connectors</title>
+	<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon" >
+	<link rel="stylesheet" href="../css/help.css" type="text/css" >
+</head>
+<body>
+	<div id="header" >
+		<div class="HeaderImgLeft" ></div>
+		<div class="HeaderImgRight" ></div>
+		<div class="HeaderText" >Restarting SCS and connectors</div>
+	</div>
+	<div id="body" class="tac" >
+		<div style="text-align: left">
+		
+			<div class="Nav" ><span class="NavLink" ><a href="../index.html" >Documentation Home</a></span><span class="NavSeparator" >&gt;</span><span class="NavSelected" >Restarting SCS and connectors</span></div>
+			
+			<div class="Menu1" >Contents</div>
+			<div class="Menu1Text" >
+				<div class="TOC1" ><a href="#restartConnectors" >1 - Restart Connectors</a></div>
+				<div class="TOC1" ><a href="#restartSCS" >2 - Restart SCS</a></div>
+				<div class="TOC2" ><a href="#SCSWindows" >2.1 - SCS installed on Windows server</a></div>
+				<div class="TOC2" ><a href="#SCSLinux" >2.2 - SCS installed on Linux server</a></div>
+				
+			</div>
+			
+			<div class="Menu1" ><a class="restartConnectors" id="intro" >1 - Restart Connectors</a></div>
+			<div class="Menu1Text" >
+				<ol>
+					<li>Go to <span class="shellscript" >SCS Web Application manager</span>, tab <span class="shellscript" >Connectors</span> and click on <span class="shellscript" >Monitor</span> for connector instance to be restarted</li>
+					<div><img src="..\img\ManageConnector.png"></div>
+					<li>You will be displayed with connector instance information and buttons which helps you managing it. Click on <span class="shellscript" >Stop</span> button, which will stop connector. If stopping process is too long, you can kill it with <span class="shellscript" >Kill</span> button.</li>
+					<div><img src="..\img\ConnectorStarted.png"></div>
+					<li>Restart connector by clicking <span class="shellscript" >Start</span> button.</li>
+					<div><img src="..\img\ConnectorStoped.png"></div>
+				</ol>
+			</div>
+			
+			<div class="Menu1" ><a class="restartSCS" id="intro" >2 - Restart SCS</a></div>
+			<div class="Menu1Text" >
+				Sometimes, for updating or maintining SCS, it could be usefull to stop and start whole SCS. This action could only be done with access to the machine on which SCS is intalled.
+				<div class="Menu2" ><a class="SCSWindows" id="gcsaml" >2.1 - SCS installed on Windows server</a></div>
+					<div class="Menu2Text" >
+						<ol>
+							<li>Go to SCS installation folder and double click on <span class="shellscript" >Setup.exe </span></li>
+							<div><img src="..\img\SCSFolderWindows.png"></div>
+							<li>Go to <span class="shellscript" >Service tab. This menu allows you to <span class="shellscript" >Start</span>, <span class="shellscript" >Stop</span> and <span class="shellscript" >Restart</span> SCS here.</li>
+							<div><img src="..\img\install_13.png"></div>
+						</ol>
+				</div>
+				
+				<div class="Menu2" ><a class="SCSLinux" id="gcsaml" >2.2 - SCS installed on Windows server</a></div>
+					<div class="Menu2Text" >
+						<ol>
+							<li>Go to SCS installation folder, and launch <span class="shellscript" >setup.sh</span> </li>
+							<div><img  src="..\img\SCSFolderLinux.png"></div>
+							<li>Select Service on setup menu by selecting option 4</li>
+							<div><img  src="..\img\setup_a.png"></div>
+							<li>You can now <span class="shellscript" >Start</span>, <span class="shellscript" >Stop</span> or <span class="shellscript" >Restart SCS</span></li>
+							<div><img  src="..\img\SCSLinuxStartStop.png"></div>
+						</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer" class="tac" >
+		<div class="copy" >Copyright &copy; 2013 Sword Group. All Rights Reserved.</div>
+	</div>
+</body>
+</html>

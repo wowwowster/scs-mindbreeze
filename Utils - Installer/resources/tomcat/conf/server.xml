@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Server port="NULL" shutdown="JC2jVJOCJEhapvKFmIOzSclrjBcgrEHuPonSIW0zuki2n7jj" >
+	<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+	<Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+	<Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+	<GlobalNamingResources/>
+	<Service name="Catalina">
+		<Connector port="NULL" protocol="HTTP/1.1" connectionTimeout="25000" redirectPort="NULL" acceptCount="250" maxThreads="500" compression="on" maxHttpHeaderSize="32768" truststoreFile="${catalina.home}/scs/conf/truststore.jks" truststorePass="gLCWLIayGU2iEDcH" />
+		<Connector port="NULL" protocol="HTTP/1.1" connectionTimeout="25000" redirectPort="NULL" acceptCount="250" maxThreads="500" compression="on" maxHttpHeaderSize="32768" SSLEnabled="true" scheme="https" secure="true" sslProtocol="TLS" keystoreFile="${catalina.home}/scs/conf/keystore.jks" keyAlias="tomcat" keystorePass="gLCWLIayGU2iEDcH" truststoreFile="${catalina.home}/scs/conf/truststore.jks" truststorePass="gLCWLIayGU2iEDcH" />
+		<Engine name="Catalina" defaultHost="NULL">
+			<Host name="NULL" appBase="webapps" unpackWARs="true" autoDeploy="true" />
+		</Engine>
+	</Service>
+</Server>

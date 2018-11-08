@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="NOINDEX,NOFOLLOW" >
+	<title>SCS Web Manager</title>
+	<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon" >
+	<link rel="stylesheet" href="../css/help.css" type="text/css" >
+</head>
+<body>
+	<div id="header" >
+		<div class="HeaderImgLeft" ></div>
+		<div class="HeaderImgRight" ></div>
+		<div class="HeaderText" >SCS Web Manager</div>
+	</div>
+	<div id="body" class="tac" >
+		<div style="text-align: left">
+		
+			<div class="Nav" ><span class="NavLink" ><a href="../index.html" >Documentation Home</a></span><span class="NavSeparator" >&gt;</span><span class="NavSelected" >SCS Web Manager</span></div>
+			
+			<div class="Menu1" >Contents</div>
+			<div class="Menu1Text" >
+				<div class="TOC1" ><a href="#intro" >1 - Introduction</a></div>
+				<div class="TOC1" ><a href="#config" >2 - Configuration</a></div>
+				<div class="TOC1" ><a href="#gsaconfig" >3 - GSA Configuration</a></div>
+				<div class="TOC2" ><a href="#gcsaml" >3.1 - Configuring a SAML provider</a></div>
+				<div class="TOC2" ><a href="#gccc" >3.2 - Configuring a Cookie Cracker</a></div>
+				<div class="TOC2" ><a href="#gccm" >3.3 - Configuring a Connector Manager</a></div>
+				<div class="TOC1" ><a href="#connectorInstal" >4 - Add Connector Instance</a></div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="intro" >1 - Introduction</a></div>
+			<div class="Menu1Text" >
+				<div>The SCS Web Manager is a web interface that allows you to create/edit/delete connectors, register a GSA or an ftp server and configure the SCS authentication.</div>
+				<div>Connectors are pieces of software that are able to pull some information from an external system (CMS, DMS, CRM, LDAP, Database, ...).</div>
+				<div>In the SCS, connectors can support the following functionalities:</div>
+				<div><table class="DefaultTable" >
+					<tr>
+						<td class="left" >Authentication: </td>
+						<td>Verifies the existence of a user in the external system. 
+							This is achieved either by retrieving the user name from a Kerberos challenge and checking that the user exists in the external system 
+							or by obtaining the user name and his password from a login form and checking this credential against the remote system.</td>
+					</tr>
+					<tr>
+						<td class="left" >Group retrieval: </td>
+						<td>Retrieves the list of groups a given user belongs to.</td>
+					</tr>
+					<tr>
+						<td class="left" >Name transformation: </td>
+						<td>Transforms a user name into another user name. A name transformer is necessary when a same user has different names in different systems and that we want to authenticate and/or retrieve the groups he belongs to for all these systems.</td>
+					</tr>
+					<tr>
+						<td class="left" >Late binding authorization: </td>
+						<td>Verifies that a given user has READ permissions on a given set of resources.</td>
+					</tr>
+				</table></div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="config" >2 - Configuration</a></div>
+			<div class="Menu1Text" >
+				<div>Once the SCS initial setup is complete and that its license has been obtained from Sword and installed, open the SCS administration web interface from a web browser.</div>
+				<div>When prompted for authentication, you can either authenticate with the local <span class="shellscript" >SCSAdmin</span> account (using the password you configured during the installation steps) or, once you have registered a GSA in the SCS, you can authenticate with a GSA admin account.</div>
+				<div>Registering a GSA could already have been done during the installation if you chose so.</div>
+				<div>Then create all the necessary connectors. Each connector creation/edition page contains in-context help and a link to the connector documentation.</div>
+				<div>When connectors have been created, you can configure authentication.</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="gsaconfig" >3 - GSA Configuration</a></div>
+			<div class="Menu1Text" >
+				<div>When the SCS configuration is complete you can configure the SCS as:</div>
+				<div>
+					<ul>
+						<li>A <span class="shellscript" >SAML provider</span> if at least one of the connectors that are configured supports <span class="shellscript" >SAML</span> authentication<span style="font-size: 80%; vertical-align: super" >*1</span> or if the SCS was configured for <span class="shellscript" >Kerberos</span> authentication.</li>
+						<li>A <span class="shellscript" >Cookie Cracker</span> if at least one of the connectors that are configured supports <span class="shellscript" >Cookie Cracking</span> authentication<span style="font-size: 80%; vertical-align: super" >*1</span>.</li>
+						<li>A <span class="shellscript" >Connector Manager</span>. The SCS can always be configured as a <span class="shellscript" >Connector Manager</span>.</li>
+					</ul>
+				</div>
+				<div style="text-align: right" >*1: The list of authentication mechanisms supported by a<br/>connector can be found in its documentation.</div>
+			
+				<div class="Menu2" ><a class="LinkRef" id="gcsaml" >3.1 - Configuring a SAML provider</a></div>
+				<div class="Menu2Text" >
+					<div>To configure the SCS as a SAML provider, connect to the GSA administration console and go to the <span class="shellscript" >Universal Login Auth Mechanisms</span> section.</div>
+					<div>Click on the <span class="shellscript" >SAML</span> tab.</div>
+					<div>Enter the following information:</div>
+					<div>
+						<table class="DefaultTable" >
+							<tr><th>Parameter name</th><th>Description</th></tr>
+							<tr><td class="left" ><span class="shellscript" >Mechanism Name</span>: </td><td><div>Any name that helps you identify what this authentication mechanism is used for.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >IDP Entity ID</span>: </td><td><div>Any string as long as it matches the <span class="shellscript" >Entity Id</span> that you configured in the SCS administration web interface.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Login URL</span>: </td><td><div><span class="shellscript" >http(s)://<span style="font-size: 90%; font-style: italic" >&lt;SCS host&gt;</span>:<span style="font-size: 90%; font-style: italic" >&lt;SCS HTTP(S) port&gt;</span>/SCS/authenticate</span></div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Artifact Resolver URL</span>: </td><td><div>Only for SAML Redirect-Binding: <span class="shellscript" >http(s)://<span style="font-size: 90%; font-style: italic" >&lt;SCS host&gt;</span>:<span style="font-size: 90%; font-style: italic" >&lt;SCS HTTP(S) port&gt;</span>/SCS/responder</span></div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Public Key of IDP</span>: </td><td><div>Only for SAML Post-Binding: Enter the content of the SAML public key that you can export using the SCS management application.</div></td></tr>
+						</table>
+					</div>
+				</div>
+			
+				<div class="Menu2" ><a class="LinkRef" id="gccc" >3.2 - Configuring a Cookie Cracker</a></div>
+				<div class="Menu2Text" >
+					<div>To configure the SCS as a Cookie Cracker, connect to the GSA administration console and go to the <span class="shellscript" >Universal Login Auth Mechanisms</span> section.</div>
+					<div>Click on the <span class="shellscript" >Cookie</span> tab.</div>
+					<div>Enter the following information:</div>
+					<div>
+						<table class="DefaultTable" >
+							<tr><th>Parameter name</th><th>Description</th></tr>
+							<tr><td class="left" ><span class="shellscript" >Mechanism Name</span>: </td><td><div>Any name that helps you identify what this authentication mechanism is used for.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Sample URL</span>: </td><td><div><span class="shellscript" >http(s)://<span style="font-size: 90%; font-style: italic" >&lt;SCS host&gt;</span>:<span style="font-size: 90%; font-style: italic" >&lt;SCS HTTP(S) port&gt;</span>/SCS/authenticate</span></div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Redirect URL</span>: </td><td><div>The SCS does not support the use of this parameter.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Return URL</span>: </td><td><div>Does not apply.</div></td></tr>
+						</table>
+					</div>
+				</div>
+			
+				<div class="Menu2" ><a class="LinkRef" id="gccm" >3.3 - Configuring a Connector Manager</a></div>
+				<div class="Menu2Text" >
+					<div>To configure the SCS as a Connector Manager, connect to the GSA administration console and go to the <span class="shellscript" >Connector Managers</span> section.</div>
+					<div>In the <span class="shellscript" >Register a New Connector Manager</span> section, enter the following information:</div>
+					<div>
+						<table class="DefaultTable" >
+							<tr><th>Parameter name</th><th>Description</th></tr>
+							<tr><td class="left" ><span class="shellscript" >Manager name</span>: </td><td><div>Any name that helps you identify what this connector manager is used for.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Service URL</span>: </td><td><div><span class="shellscript" >http(s)://<span style="font-size: 90%; font-style: italic" >&lt;SCS host&gt;</span>:<span style="font-size: 90%; font-style: italic" >&lt;SCS HTTP(S) port&gt;</span>/SCS/connector-manager</span></div></td></tr>
+						</table>
+					</div>
+					<div>With the SCS configured as a Connector Manager, you cannot add connectors or edit connectors configuration from the GSA administration console. SCS connectors management always has to be done using the SCS configuration web interface.</div>
+					<div>Consequently as soon as you register the SCS as a Connector Manager, the list of connectors you configured in the SCS configuration web interface is immediately displayed and you can start configuring connectors for authentication or group retrieval in the <span class="shellscript" >Universal Login Auth Mechanisms</span> section of the GSA administration console.</div>
+				</div>
+			</div>
+			<div class="Menu1" ><a class="LinkRef" id="connectorInstal" >4 - Add Connector Instance</a></div>
+			<div class="Menu1Text" >
+					<ol>
+						<li><div>Go to the SCS Web manager interface tab Connector List and click on <span class="shellscript" >Add Connector:</span></div></li>
+						<div style="text-align: center"><span><img src="..\img\AddConnector.png"></span></div>
+						<li><div>Select your connector type instance on the scrolling menu:</div></li>
+						<div style="text-align: center"><span><img style ="width: 490px; height: 170px" src="..\img\ConnectorSelection.png"></span></div>
+						<li><div>Fill connector configuration before saving. You can find assistance for this part by looking at Connector documentation.</div></li>
+					</ol>
+					<div class="Menu2Text" >
+					<div>Once configured, you can manage your connector instance on <span class="shellscript" >Connector tab</span></div>
+						<div style="text-align: center"><span><img style ="width: 500px; height: 300px" src="..\img\ManageConnector.png"></span></div>
+						<div>On that menu you can perform the following tasks:</div>
+							<div><span class="shellscript" >Configure:</span> Modification of connector configuration</div>
+							<div><span class="shellscript" >Monitor:</span> This page displays indexing information on the connector. Many actions are available on that page such as:</div>
+								<ul>
+									<li>Start and Stop connector</li>
+									<li>Reset the index</li>
+									<li>View Logs</li>
+									<li>View Indexing Internal state</li>
+								</ul>
+							<div><span class="shellscript" >Delete:</span> Used to remove connector instance.</div>
+					</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer" class="tac" >
+		<div class="copy" >Copyright &copy; 2013 Sword Group. All Rights Reserved.</div>
+	</div>
+</body>
+</html>

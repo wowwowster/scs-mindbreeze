@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <!-- Content Attributes you specify here won't be put as metadata -->
+    <xsl:variable name="contentAttributes"><xsl:text></xsl:text></xsl:variable>
+    <xsl:template match="content">
+        
+        <xsl:variable name="baseurl">
+            <xsl:text>http://swpvezpub.parisgsa.lan/ezpublish/</xsl:text>
+        </xsl:variable>
+        
+        <xsl:variable name="title">
+            
+            <xsl:for-each select="attribute">
+                <xsl:variable name="currentTag"><xsl:value-of select="name"/></xsl:variable>
+                <xsl:if test="$currentTag='name'">
+                    <xsl:value-of select="value"/>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        
+        <html>
+            <head>
+                <xsl:call-template name="meta"/>
+                <title><xsl:value-of select="$title"/></title>
+            </head>
+            <body>
+                <table align="center" cellspacing="0" border="1">
+                    
+                    <xsl:apply-templates/>
+                </table>
+            </body>
+        </html>
+        
+    </xsl:template>
+    <!-- match all additionnal attributes -->
+    <xsl:template match="attribute">
+        <xsl:variable name="currentTag"><xsl:value-of select="name"/></xsl:variable>
+        <xsl:if test="$currentTag!='image'">
+            <tr><td><xsl:value-of disable-output-escaping="yes" select="value"/><xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text></td></tr>
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template name="meta">
+        <xsl:for-each select="attribute">
+            
+            <xsl:variable name="currentTagName"><xsl:value-of select="name"/></xsl:variable>
+            <xsl:variable name="currentTagValue"><xsl:value-of select="value"/></xsl:variable>
+            <xsl:if test="not(contains($contentAttributes,$currentTagName))">
+                <meta name="{$currentTagName}" content="{$currentTagValue}"/>
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
+    
+</xsl:stylesheet>

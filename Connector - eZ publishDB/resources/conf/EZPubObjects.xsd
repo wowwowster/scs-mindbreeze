@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://connect.sword-group.com/CMSObjects" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://connect.sword-group.com/CMSObjects" elementFormDefault="qualified" >
+
+	<xs:redefine schemaLocation="CMSObjects.xsd">
+		<xs:complexType name="DocbaseType">
+			<xs:complexContent>
+				<xs:extension base="DocbaseType">
+					<xs:sequence>
+						<xs:element name="dbType" type="DBType" />
+						<xs:element name="connectionString" type="xs:string" />
+						<xs:element name="userDB" type="xs:string" />
+						<xs:element name="pwdDB" type="xs:hexBinary" />
+						<xs:element name="binaryFileLocation" type="xs:string" />
+						<xs:element name="binaryTypes" type="xs:string" />
+						<xs:element name="binaryTypesFormat" type="xs:string" />
+						<xs:element name="indexSearchableOnly" type="xs:boolean" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:redefine>
+	
+</xs:schema>

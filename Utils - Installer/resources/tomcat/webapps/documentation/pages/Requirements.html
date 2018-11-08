@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="NOINDEX,NOFOLLOW" >
+	<title>SCS Requirements</title>
+	<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon" >
+	<link rel="stylesheet" href="../css/help.css" type="text/css" >
+</head>
+<body>
+	<div id="header" >
+		<div class="HeaderImgLeft" ></div>
+		<div class="HeaderImgRight" ></div>
+		<div class="HeaderText" >SCS Requirements</div>
+	</div>
+	<div id="body" class="tac" >
+		<div style="text-align: left">
+		
+			<div class="Nav" ><span class="NavLink" ><a href="../index.html" >Documentation Home</a></span><span class="NavSeparator" >&gt;</span><span class="NavSelected" >Requirements</span></div>
+			
+			<div class="Menu1" >Contents</div>
+			<div class="Menu1Text" >
+				<div class="TOC1" ><a href="#intro" >1 - Introduction</a></div>
+				<div class="TOC1" ><a href="#hwr" >2 - Hardware requirements</a></div>
+				<div class="TOC1" ><a href="#swr" >3 - Software requirements</a></div>
+				<div class="TOC1" ><a href="#nwr" >4 - Network requirements</a></div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="intro" >1 - Introduction</a></div>
+			<div class="Menu1Text" >
+				<div>Sword's Google Service Provider (SCS) is a connector framework for the Google Search Appliance.</div>
+				<div>It supports both Google’s SAML SPI and Connector Manager SPI.</div>
+				<div>Its purpose is to handle:
+					<ul>
+						<li>indexing of remote sources ; </li>
+						<li>user authentication ; </li>
+						<li>users group membership retrieval ; </li>
+						<li>authorization of secure documents ; </li>
+						<li>and/or serving of secure documents.</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="hwr" >2 - Hardware requirements</a></div>
+			<div class="Menu1Text" >
+				<div>
+					Minimal hardware requirements are as follows:
+					<ul>
+						<li>
+							<div>64 bits platforms:</div>
+							<div>
+								<ul>
+									<li>2GB of dedicated RAM which, according to Java best practice, requires 4GB of physical memory ; </li>
+									<li>2GHz processor ; </li>
+									<li>500 MB disk space.</li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<div>32 bits platforms:</div>
+							<div>
+								<ul>
+									<li>1GB of dedicated RAM which, according to Java best practice, requires 2GB of physical memory ; </li>
+									<li>2GHz processor ; </li>
+									<li>500 MB disk space.</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div>
+					For optimal performances, the following requirements apply:
+					<ul>
+						<li>
+							<div>64 bits platforms:</div>
+							<div>
+								<ul>
+									<li>1.5GB of RAM plus ; </li>
+									<li>512MB of RAM per connector hosted by the server ; </li>
+									<li>2 × 2GHz processor ; </li>
+									<li>500MB disk space plus ; </li>
+									<li>10kB disk space per document included in the indexing scope (i.e. if you plan to index 100.000 documents, you will need 1GB additional disk space).</li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<div>32 bits platforms:</div>
+							<div>
+								<ul>
+									<li>768MB of RAM plus ; </li>
+									<li>256MB of RAM per connector hosted by the server ; </li>
+									<li>2 × 2GHz processor ; </li>
+									<li>500MB disk space plus ; </li>
+									<li>10kB disk space per document included in the indexing scope (i.e. if you plan to index 100.000 documents, you will need 1GB additional disk space).</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="swr" >3 - Software requirements</a></div>
+			<div class="Menu1Text" >
+				<div>
+					Supported operating systems are:
+					<ul>
+						<li>Linux (CentOS, Debian-based distributions, RedHat) ; </li>
+						<li>Microsoft Windows Server (2003 or above).</li>
+					</ul>
+				</div>
+				<div>A web browser with full support for HTML 5 is required to use the SCS Web Manager web application.</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="nwr" >4 - Network requirements</a></div>
+			<div class="Menu1Text" >
+				<div>The HTTP port numbers that the SCS will use are configured after installation - you will need one port for HTTP and one port for HTTPS.</div>
+				<div>
+					The server HTTP and HTTPS ports must be reachable from: 
+					<ul>
+						<li>the GSA if registered, for most operations ; </li>
+						<li>any end-user machine when the SCS is configured to perform SAML authentication.</li>
+					</ul>
+				</div>
+				<div>The server also needs to have access to the API endpoints its connectors connect to. Refer to each connector documentation for more information about these endpoints.</div>
+			</div>
+			
+		</div>
+	</div>
+	<div id="footer" class="tac" >
+		<div class="copy" >Copyright &copy; 2013 Sword Group. All Rights Reserved.</div>
+	</div>
+</body>
+</html>

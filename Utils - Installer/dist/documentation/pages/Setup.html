@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="NOINDEX,NOFOLLOW" >
+	<title>SCS Setup application</title>
+	<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon" >
+	<link rel="stylesheet" href="../css/help.css" type="text/css" >
+	<link rel="stylesheet" href="../css/jquery-ui/jquery-ui.min.css" type="text/css" >
+</head>
+<body>
+	<div id="header" >
+		<div class="HeaderImgLeft" ></div>
+		<div class="HeaderImgRight" ></div>
+		<div class="HeaderText" >SCS Setup application</div>
+	</div>
+	<div id="body" class="tac" >
+		<div style="text-align: left">
+		
+			<div class="Nav" ><span class="NavLink" ><a href="../index.html" >Documentation Home</a></span><span class="NavSeparator" >&gt;</span><span class="NavSelected" >SCS Setup application</span></div>
+			
+			<div class="Menu1" >Contents</div>
+			<div class="Menu1Text" >
+				<div class="TOC1" ><a href="#intro" >1 - Introduction</a></div>
+				<div class="TOC2" ><a href="#introwin" >1.1 - GUI</a></div>
+				<div class="TOC2" ><a href="#intronux" >1.2 - Console</a></div>
+				<div class="TOC1" ><a href="#BaseHttpConf" >2 - SCS HTTP Configuration</a></div>
+				<div class="TOC1" ><a href="#LicenseMgt">3 - License management</a></div>
+				<div class="TOC1" ><a href="#KeysConf" >4 - Certificates Management</a></div>
+				<div class="TOC2" ><a href="#SrvCert" >4.1 - Currently installed server certificate</a></div>
+				<div class="TOC2" ><a href="#SAMLKeys" >4.2 - SAML Keys</a></div>
+				<div class="TOC1" ><a href="#KrbConf" >5 - Kerberos Configuration</a></div>
+				<div class="TOC2" ><a href="#KrbIntro" >5.1 - Introduction</a></div>
+				<div class="TOC2" ><a href="#svcuser">5.2 - Creation of a service user account</a></div>
+				<div class="TOC2" ><a href="#ktpass">5.3 - Configuration of the Service Principal Name and generation of the service shared secret key</a></div>
+				<div class="TOC2" ><a href="#scskrb">5.4 - Configuring the SCS for Kerberos</a></div>
+				<div class="TOC1" ><a href="#SCSSvc">6 - Service Configuration</a></div>
+				<div class="TOC1" ><a href="#SCSPatches">7 - Patch upload</a></div>
+				
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="intro" >1 - Introduction</a></div>
+			<div class="Menu1Text" >
+				<div>Use the SCS Setup application to configure the SCS server.</div>
+				<div>When you start the application, if your environment is headless, it will automatically start in console mode. It will start a GUI otherwise.</div>
+				<div>To start the application, navigate to the SCS installation folder and run:</div>
+				<div><ul>
+					<li><span class="shellscript" >setup.exe</span> on Windows ; </li>
+					<li><span class="shellscript" >./setup.sh</span> on Linux.</li>
+				</ul></div>
+				<div style="padding-left: 36px" ><table><tr>
+					<td><div style="width: 12px; height: 12px" ><span class="ui-icon ui-icon-alert"></span></div><td>
+					<td><div>
+						<div>The script <span class="shellscript" >setup.sh</span> detects whether a graphical interface is available and starts in GUI mode or console mode.</div>
+						<div>On some Linux installations, JAVA fails to detect that the environment is headless and tries to start a GUI.</div>
+						<div>In that case, an error occurs (<span class="shellscript" >Could not initialize class sun.awt.X11GraphicsEnvironment</span>) and the setup application exits immediately.</div>
+						<div>To force the setup application to start in console mode, run the script with the argument <span class="shellscript" >/NoGUI</span>:</div>
+						<div><span class="shellscript" style="padding-left: 24px" >./setup.sh /NoGUI</span></div>
+					</div><td>
+				</tr></table></div>
+				<div class="Menu2" ><a class="LinkRef" id="introwin" >1.1 - GUI</a></div>
+				<div class="Menu2Text" >
+					<div>In GUI mode, the Setup application menus are organized in tabs. Click on a tab to access the menu.</div>
+					<div><img class="egimg" src="../img/setup_1.png" /></div>
+				</div>
+				<div class="Menu2" ><a class="LinkRef" id="intronux" >1.1 - Console</a></div>
+				<div class="Menu2Text" >
+					<div>In console mode, menus can be accessed by typing their item number.</div>
+					<div><img class="egimg" src="../img/setup_a.png" /></div>
+					<div>The first time you execute the SCS Setup application, you will automatically be redirected to the <a href="#BaseHttpConf" >HTTP Configuration</a> menu.</div>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="BaseHttpConf" >2 - SCS HTTP Configuration</a></div>
+			<div class="Menu1Text" >
+				<div>In this page you can configure the SCS basic HTTP parameters.</div>
+				<div>To access this page, open the setup application and go to the <span class="boldit" >Base configuration</span> menu.</div>
+				<div>This page allows the configuration of the 4 parameters below:</div>
+				<div>
+					<table class="DefaultTable" >
+						<tr><th>Parameter name</th><th>Description</th></tr>
+						<tr><td class="left" ><span class="shellscript" >Hostname</span>: </td><td><div>The server host name.</div><div>This name must be fully qualified:</div><div style="padding-left: 24px" >For instance if the server name is <i>myhost</i> and the domain suffix is <i>mydomain.com</i>, the fully qualified domain name of the server is <i>myhost.domain.com</i>.</div></td></tr>
+						<tr><td class="left" ><span class="shellscript" >HTTP port</span>: </td><td><div>The number of the HTTP port that the server will use to listen for incoming HTTP connections.</div><div>On Linux systems, ports lower than 1024 cannot be bound without root privileges and running a web server as root is <b>strongly</b> discouraged.</div><div>If you want the SCS to use port 80 for HTTP, it is recommended to configure the SCS for a higher port and change the routing table configuration to re-route port 80 to the SCS HTTP port.</div></td></tr>
+						<tr><td class="left" ><span class="shellscript" >HTTPS port</span>: </td><td><div>The number of the HTTP port that the server will use to listen for incoming HTTPS connections.</div><div>On Linux systems, ports lower than 1024 cannot be bound without root privileges and running a web server as root is <b>strongly</b> discouraged.</div><div>If you want the SCS to use port 443 for HTTPS, it is recommended to configure the SCS for a higher port and change the routing table configuration to re-route port 443 to the SCS HTTPS port.</div></td></tr>
+						<tr><td class="left" ><span class="shellscript" >Administration password</span>: </td><td>This password will be necessary to access the SCS administration web interface. SCS administration web interface access is protected by HTTP Basic authentication over SSL. Username is always SCSAdmin and password is the password that you configure here.</td></tr>
+					</table>
+				</div>
+				<div>Enter the correct information for each parameter and press the <span class="boldit" >Save</span> button.</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="LicenseMgt" >3 - License management</a></div>
+			<div class="Menu1Text" >
+				<div>This page allows the installation of the SCS license.</div>
+				<div>To access this page, open the setup application and go to the <span class="boldit" >License</span> menu.</div>
+				<div>The page allows the following:</div>
+				<div>
+					<table class="DefaultTable" >
+						<tr><td class="left" ><span class="shellscript" >Export Instance ID</span>: </td><td>A unique ID is associated with each SCS instance. Before you can install a license, you need to export the instance ID to a file and send this file to Sword, requesting a license for this instance.</td></tr>
+						<tr><td class="left" ><span class="shellscript" >Import License</span>: </td><td>Once you receive the license file from Sword, you can install it by indicating the path of the license file.</td></tr>
+					</table>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="KeysConf" >4 - Certificates Management</a></div>
+			<div class="Menu1Text" >
+				<div>This page allows the configuration of the SCS certificate and SAML keys.</div>
+				<div>To access this page, open the setup application and go to the <span class="boldit" >Certificates</span> menu.</div>
+				<div>The page contains two sections:</div>
+				<div>
+					<ul>
+						<li>Currently installed server certificate</li>
+						<li>SAML Keys</li>
+					</ul>
+				</div>
+				<div>
+					<table>
+						<tr>
+							<td>GUI</td>
+							<td><img src="../img/setup_2.png" /></td>
+						</tr>
+						<tr>
+							<td>Console</td>
+							<td><img src="../img/setup_b.png" /></td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="Menu2" ><a class="LinkRef" id="SrvCert" >4.1 - Currently installed server certificate</a></div>
+				<div class="Menu2Text" >
+					<div>This section shows information about the certificate that the SCS is currently using:</div>
+					<div>
+						<table class="DefaultTable" >
+							<tr><td class="left" ><span class="shellscript" >Host</span>: </td><td><div>The hostname for which this certificate is valid.</div><div>Initially the connector contains a self-signed certificate generated for the host <i>localhost</i></div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Valid until</span>: </td><td><div>The certificate expiration date.</div></td></tr>
+						</table>
+					</div>
+					<div>From this menu, you can also:</div>
+					<div>
+						<table class="DefaultTable" >
+							<tr><th>Item name</th><th>Description</th></tr>
+							<tr>
+								<td class="left" ><span class="shellscript" >Generate new</span>: </td>
+								<td><div>Will generate a new self-signed certificate for the hostname configured in the <a href="#BaseHttpConf" >SCS HTTP Configuration</a>.</div><div>This certificate will then be used by the server for all HTTPS connections.</div></td>
+							</tr>
+							<tr>
+								<td class="left" ><span class="shellscript" >Export public key</span>: </td>
+								<td><div>Exports the current certificate in a base64 encoded PEM format.</div><div>When the certificate is not signed by a trusted certification authority, exporting it allows you to add it to the list of trusted certificates of your web browser, the GSA or any application that will connect to the SCS in HTTPS.</div></td>
+							</tr>
+							<tr>
+								<td class="left" ><span class="shellscript" >Export a CSR</span>: </td>
+								<td><div>Will generate a certificate signing request (CSR) that your certification authority needs to sign the certificate.</div></td>
+							</tr>
+							<tr>
+								<td class="left" ><span class="shellscript" >Install CSR reply</span>: </td>
+								<td>
+									<div>Installs the signed certificate supplied by your CA.</div>
+									<div>The CSR reply needs to contain the entire certificate chain in base64 encoded PEM format - for this you need to combine the host certificate, intermediate CA certificates (if any), and the root CA certificate in a single file.</div>
+									<div>The certificates must be in the following order:</div>
+									<div class="shellscript" style="padding-left: 32px" >-----BEGIN CERTIFICATE-----</div>
+									<div class="shellscript" style="padding-left: 64px; font-weight: bold" >Host certificate</div>
+									<div class="shellscript" style="padding-left: 32px" >-----END CERTIFICATE-----</div>
+									<div class="shellscript" style="padding-left: 32px" >-----BEGIN CERTIFICATE-----</div>
+									<div class="shellscript" style="padding-left: 64px; font-weight: bold" >Intermediate certificate-1</div>
+									<div class="shellscript" style="padding-left: 32px" >-----END CERTIFICATE-----</div>
+									<div class="shellscript" style="padding-left: 32px" >-----BEGIN CERTIFICATE-----</div>
+									<div class="shellscript" style="padding-left: 64px; font-weight: bold" >Intermediate certificate-2</div>
+									<div class="shellscript" style="padding-left: 32px" >-----END CERTIFICATE-----</div>
+									<div class="shellscript" style="padding-left: 32px" >-----BEGIN CERTIFICATE-----</div>
+									<div class="shellscript" style="padding-left: 64px; font-weight: bold" >Root certificate</div>
+									<div class="shellscript" style="padding-left: 32px" >-----END CERTIFICATE-----</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				
+				<div class="Menu2" ><a class="LinkRef" id="SAMLKeys" >4.2 - SAML Keys</a></div>
+				<div class="Menu2Text" >
+					<div>SAML keys consist of a RSA key pair (private/public key):</div>
+					<div><ul>
+						<li>The private key is used to sign the SAML messages sent by the SCS to the GSA during SAML Post-Binding authentication.</li>
+						<li>The public key is used by the GSA to verify the signature of the SAML messages received from the SCS.</li>
+					</ul></div>
+					<div>You do not need to worry about these keys if you are not planning on using SAML Post-Binding authentication.</div>
+					<div>In this section you can create and export the SAML keys. It contains two options:</div>
+					<div>
+						<table class="DefaultTable" >
+							<tr><th>Option name</th><th>Description</th></tr>
+							<tr>
+								<td class="left" ><span class="shellscript" >Generate new keys</span>: </td>
+								<td><div>Will generate a new set of keys.</div></td>
+							</tr>
+							<tr>
+								<td class="left" ><span class="shellscript" >Export public key</span>: </td>
+								<td>
+									<div>Exports the current public key in a format suitable for the GSA.</div>
+									<div>To import it into the GSA, open the exported key with a text editor and copy its content in GSA administration console:</div>
+									<div style="font-style: italic; padding-left: 24px" >Universal Login Auth Mechanisms -&gt; SAML tab -&gt; textarea named &quot;Public Key of IDP&quot;</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="KrbConf" >5 - Kerberos Configuration</a></div>
+			<div class="Menu1Text" >
+			
+				<div class="Menu2" ><a class="LinkRef" id="KrbIntro" >5.1 - Introduction</a></div>
+				<div class="Menu2Text" >
+					<span>Prior to configuring the SCS for Kerberos authentication, the following tasks have to be completed on the domain controller:</span>
+					<ul>
+						<li><a href="#svcuser">Creation of a service user account</a></li>
+						<li><a href="#ktpass">Configuration of the Service Principal Name (SPN) for the SCS host and generation of the service shared secret key</a></li>
+					</ul>
+				</div>
+				
+				<div class="Menu2" ><a class="LinkRef" id="svcuser">5.2 - Creation of a service user account</a></div>
+				<div class="Menu2Text" >
+					<ol>
+						<li>Log into one of the Windows servers that act as the domain controller on your network.</li>
+						<li>
+							Open <span class="boldit" >Active Directory Users and Computers</span> management wizard: 
+							<ul>
+								<li><span class="shellscript" >dsa.msc</span>, or</li>
+								<li><span class="shellscript" >Start Menu -&gt; All Programs -&gt; Administrative Tools -&gt; Active Directory Users and Computers</span>.</li>
+							</ul>
+						</li>
+						<li>
+							In the left-hand side navigation panel, select <span class="shellscript" >&lt;domain name&gt; -&gt; Users</span>: <br>
+							<img class="egimg" src="../img/dsa1.png" />
+						</li>
+						<li>
+							Right-click the <span class="shellscript" >Users</span> folder and select <span class="shellscript" >New -&gt; User</span>: <br>
+							<img class="egimg" src="../img/dsa2.png" />
+						</li>
+						<li>
+							In the user creation dialog window: 
+							<ul>
+								<li>Choose a <span class="shellscript" >Full name</span> ; </li>
+								<li>a <span class="shellscript" >User logon name</span> ; </li>
+								<li>select a domain that is trusted by all the other domains ; </li>
+								<li>then click on <span class="shellscript" >Next</span>.</li>
+							</ul>
+							<img class="egimg" src="../img/dsa3.png" />
+						</li>
+						<li>
+							In the subsequent dialog window: 
+							<ul>
+								<li>Choose a password ; </li>
+								<li>if permitted by your security policies, check the <span class="shellscript" >Password never expires</span> checkbox ; </li>
+								<li>uncheck all other checkboxes ; </li>
+								<li>then click on <span class="shellscript" >Next</span>.</li>
+							</ul>
+							<img class="egimg" src="../img/dsa4.png" />
+						</li>
+						<li>In the subsequent dialog window click on <span class="shellscript" >Finish</span>.</li>
+					</ol>
+				</div>
+				
+				<div class="Menu2" ><a class="LinkRef" id="ktpass">5.3 - Configuration of the Service Principal Name and generation of the service shared secret key</a></div>
+				<div class="Menu2Text" >
+					The configuration of the SPN and the generation of the service shared secret key is achieved using one single command: the <span class="shellscript" >ktpass</span> command.<br/>
+					To run this command, you need to be connected as a Domain Administrator to the connector machine or to the Domain Controller.<br/>
+					According to the <a target="_blank" href="http://technet.microsoft.com/en-us/library/cc753771.aspx" >Microsoft documentation</a> the following parameters are supported:
+					<table class="DefaultTable" >
+						<tr><th>Parameter</th><th>Value specification</th><th>Description</th></tr>
+						<tr><td class="left shellscript" >/out</td><td class="shellscript" >&lt;FileName&gt;</td><td>Specifies the name of the Kerberos version 5 .keytab file to generate.</td></tr>
+						<tr><td class="left shellscript" >/princ</td><td class="shellscript" >&lt;PrincipalName&gt;</td><td>Specifies the principal name.</td></tr>
+						<tr><td class="left shellscript" >/mapuser</td><td class="shellscript" >&lt;UserAccount&gt;</td><td>Maps the name of the Kerberos principal, which is specified by the princ parameter, to the specified domain account.</td></tr>
+						<tr><td class="left shellscript" >/pass</td><td class="shellscript" >{Password|*|{-|+}rndpass}</td><td>Specifies a password for the principal user name that is specified by the princ parameter. Use "*" to prompt for a password.</td></tr>
+						<tr><td class="left shellscript" >/crypto</td><td class="shellscript" >{DES-CBC-CRC|DES-CBC-MD5|RC4-HMAC-NT|<br/>AES256-SHA1|AES128-SHA1|All}</td><td>Specifies the keys that are generated in the keytab file.</td></tr>
+						<tr><td class="left shellscript" >/ptype</td><td class="shellscript" >{KRB5_NT_PRINCIPAL|KRB5_NT_SRV_INST|KRB5_NT_SRV_HST}</td><td>Specifies the principal type.</td></tr>
+					</table>
+					The values for above parameters are calculated based on the following parameters:
+					<table class="DefaultTable" >
+						<tr><th>Parameter name</th><th>Description</th><th>Value used in examples</th></tr>
+						<tr><td class="left shellscript" >Domain name</td><td>Fully qualified domain name (see <a target="_blank" href="http://en.wikipedia.org/wiki/Fully_qualified_domain_name" >wiki</a>).</td><td class="shellscript" >mydomain.com</td></tr>
+						<tr><td class="left shellscript" >Kerberos realm</td><td>Although Kerberos realm can be any ASCII string, convention is to make it the same as the domain name, in upper-case letters (see <a target="_blank" href="http://web.mit.edu/kerberos/krb5-current/doc/admin/realm_config.html" >wiki</a>).</td><td class="shellscript" >MYDOMAIN.COM</td></tr>
+						<tr><td class="left shellscript" >Domain NetBIOS name</td><td>The NetBIOS name of the domain.</td><td class="shellscript" >MYDOMAIN</td></tr>
+						<tr><td class="left shellscript" >SCS fqdn</td><td>Fully qualified domain name of the SCS machine.<br/><img style="margin-right: 4px" src="../img/beware.png" width="17" height="14" />It must be a DNS A-name (or Hostname). The procedure will not work if a DNS CNAME (Alias) is used.</td><td class="shellscript" >scs.mydomain.com</td></tr>
+						<tr><td class="left shellscript" >SCS service user</td><td>The logon name of the user that was created during the previous step.</td><td class="shellscript" >scs-krb-svc-user</td></tr>
+						<tr><td class="left shellscript" >SCS service user's password</td><td>Above user's password.</td><td class="shellscript" >$omep4ssw0rd</td></tr>
+					</table>
+					From there, the values for the <span class="shellscript" >ktpass</span> command parameters are:
+					<table class="DefaultTable" >
+						<tr><th>Parameter</th><th>Value Format</th><th>Example Value</th></tr>
+						<tr><td class="left shellscript" >/out</td><td>Any valid file path</td><td class="shellscript" >C:\scs.keytab</td></tr>
+						<tr><td class="left shellscript" >/princ</td><td>Concatenation of <span class="shellscript" >HTTP/</span>, the <span class="shellscript" >SCS fqdn</span>, the <span class="shellscript" >@</span> character and the <span class="shellscript" >Kerberos realm</span></td><td class="shellscript" >HTTP/scs.mydomain.com@MYDOMAIN.COM</td></tr>
+						<tr><td class="left shellscript" >/mapuser</td><td>Concatenation of the <span class="shellscript" >Domain NetBIOS name</span>, the <span class="shellscript" >\</span> character and the <span class="shellscript" >SCS service user</span></td><td class="shellscript" >MYDOMAIN\scs-krb-svc-user</td></tr>
+						<tr><td class="left shellscript" >/pass</td><td>The <span class="shellscript" >SCS service user's password</span> or <span class="shellscript" >*</span> for a secure prompt.</td><td class="shellscript" >$omep4ssw0rd</td></tr>
+						<tr><td class="left shellscript" >/crypto</td><td>Has to be <span class="shellscript" >RC4-HMAC-NT</span></td><td class="shellscript" >RC4-HMAC-NT</td></tr>
+						<tr><td class="left shellscript" >/ptype</td><td>Has to be <span class="shellscript" >KRB5_NT_PRINCIPAL</span></td><td class="shellscript" >KRB5_NT_PRINCIPAL</td></tr>
+					</table>
+					Hence the resulting command for above sample values would be:
+					<p class="shellscript" style="font-size: 110%; padding-left: 30px" >ktpass /out C:\scs.keytab /princ HTTP/scs.mydomain.com@MYDOMAIN.COM /mapuser MYDOMAIN\scs-krb-svc-user /pass $omep4ssw0rd /crypto RC4-HMAC-NT /ptype KRB5_NT_PRINCIPAL</p>
+					After you run this command, you can verify that it was successful by checking that:
+					<ul>
+						<li>The file specified by the <span class="shellscript" >/out</span> parameter has been created.</li>
+						<li>The principal value specified by the <span class="shellscript" >/princ</span> parameter appears in the Account tab of the user properties in the Active Directory Users and Computers management wizard:<br/><img class="egimg" src="../img/dsa5.png" /></li>
+					</ul>
+				</div>
+			
+				<div class="Menu2" ><a class="LinkRef" id="scskrb">5.4 - Configuring the SCS for Kerberos</a></div>
+				<div class="Menu2Text" >
+					<div>This page allows the configuration of Kerberos authentication for the SCS. It is only available with the GUI mode.</div>
+					<div>To access this page, open the setup application and go to the <span class="boldit" >Kerberos</span> tab.</div>
+					<div>The page contains four parameters:</div>
+					<div>
+						<table class="DefaultTable" >
+							<tr><th>Parameter name</th><th>Description</th></tr>
+							<tr><td class="left" ><span class="shellscript" >Kerberos REALM</span>: </td><td><div>Use the value that you chose for the <span class="shellscript" >Kerberos realm</span> parameter during the <a href="./Kerberos.html#ktpass" >configuration of the SPN</a>.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >SPN Hostname</span>: </td><td><div>Use the value that you chose for the <span class="shellscript" >SCS fqdn</span> parameter during the <a href="./Kerberos.html#ktpass" >configuration of the SPN</a>.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >KDC Hostname</span>: </td><td><div>Hostname of the KDC (Key Distribution Center). On Windows systems the domain controller (Active Directory) is the KDC.</div></td></tr>
+							<tr><td class="left" ><span class="shellscript" >Keytab file</span>: </td><td>Upload the file that was generated during the <a href="./Kerberos.html#ktpass" >generation of the service shared secret key</a> (<span class="shellscript" >/out</span> parameter of the <span class="shellscript" >ktpass</span> command).</td></tr>
+						</table>
+					</div>
+					<div>Enter the correct information for each parameter and press the <span class="boldit" >Save</span> button.</div>
+				</div>
+				
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="SCSSvc" >6 - Service Configuration</a></div>
+			<div class="Menu1Text" >
+				<div>This page allows the configuration of the SCS as a service.</div>
+				<div>Configuring the SCS as a service is only possible on:</div>
+				<div><ul>
+					<li>Windows platforms</li>
+					<li>Linux platforms with the <span class="shellscript" >chkconfig</span> utility installed (Redhat, Centos)</li>
+					<li>Linux platforms with the <span class="shellscript" >update-rc.d</span> utility installed (all Debian-based Linux systems)</li>
+				</ul></div>
+				<div>To access this page, open the setup application and go to the <span class="boldit" >Service</span> menu.</div>
+				<div>The page allows the following:</div>
+				<div>
+					<table class="DefaultTable" >
+						<tr><th>Item name</th><th>Description</th></tr>
+						<tr>
+							<td class="left" ><span class="shellscript" >Open configuration page</span> (GUI mode only): </td>
+							<td>This item is enabled only when the service is installed and started and will open the <a href="./Configuration.html" >SCS Web Manager</a> with your OS default web browser.</td>
+						</tr>
+						<tr>
+							<td class="left" ><span class="shellscript" >View configuration page URL</span> (Console mode only): </td>
+							<td>This item is enabled only when the service is installed and started and will display the <a href="./Configuration.html" >SCS Web Manager</a> URL so that you can open it from a machine that has a GUI and a HTML5-compatible web browser.</td>
+						</tr>
+						<tr><td class="left" ><span class="shellscript" >Delete</span>: </td><td>This item is enabled only when the service is installed and stopped and will delete the service from the OS configuration.</td></tr>
+						<tr><td class="left" ><span class="shellscript" >Start</span>: </td><td>This item is enabled only when the service is installed and stopped and will start the service.</td></tr>
+						<tr><td class="left" ><span class="shellscript" >Restart</span>: </td><td>This item is enabled only when the service is installed and started and will stop the service, backup the SCS log then start the service.</td></tr>
+						<tr><td class="left" ><span class="shellscript" >Stop</span>: </td><td>This item is enabled only when the service is installed and started and will stop the service.</td></tr>
+					</table>
+				</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="SCSPatches" >7 - Patch upload</a></div>
+			<div class="Menu1Text" >
+				<div>As the SCS evolves, Sword can supply patches that will upgrade the SCS and its connectors to the latest version. This page allows you to apply supplied patch.</div>
+				<div>To access this page, open the setup application and go to the <span class="boldit" >Apply Patch</span> menu.</div>
+			</div>
+			
+		</div>
+	</div>
+	<div id="footer" class="tac" >
+		<div class="copy" >Copyright &copy; 2013 Sword Group. All Rights Reserved.</div>
+	</div>
+</body>
+</html>

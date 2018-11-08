@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="NOINDEX,NOFOLLOW" >
+	<title>eZ Publish connector</title>
+	<link rel="shortcut icon" href="../../img/favicon.ico" type="image/x-icon" >
+	<link rel="stylesheet" href="../../css/help.css" type="text/css" >
+</head>
+<body>
+	<div id="header" >
+		<div class="HeaderImgLeft" ></div>
+		<div class="HeaderImgRight" ></div>
+		<div class="HeaderText" >eZ Publish connector</div>
+	</div>
+	<div id="body" class="tac" >
+		<div style="text-align: left">
+			
+			<div class="Menu1" >Contents</div>
+			<div class="Menu1Text" >
+				<div class="TOC1" ><a href="#arch" >1 - Architecture</a></div>
+				<div class="TOC1" ><a href="#req" >2 - Additional requirements</a></div>
+				<div class="TOC2" ><a href="#hreq" >2.1 - Hardware</a></div>
+				<div class="TOC2" ><a href="#sreq" >2.2 - Software</a></div>
+				<div class="TOC2" ><a href="#nreq" >2.3 - Network</a></div>
+				<div class="TOC1" ><a href="#cs" >3 - Connector SCS functionalities</a></div>
+				<div class="TOC1" ><a href="#conConf" >4 - Connector Configuration</a></div>
+				<div class="TOC1" ><a href="#conDef" >4.1 - Connector Definition</a></div>
+				<div class="TOC1" ><a href="#driveParam" >4.2 - eZ Publish parameters</a></div>
+				<div class="TOC1" ><a href="#ConfIndex" >4.3 - Indexing</a></div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="req" >1 - Architecture</a></div>
+			<div class="Menu1Text" >
+				eZ Publish Connector is part of SCS solution on external server adapting the GSA to Drive folders. It indexes eZ Publish folders or files with specific metadata and pushes indexed content to the Google Search Appliance.
+							</div>
+			<div class="Menu1" ><a class="LinkRef" id="req" >2 - Additional requirements</a></div>
+			<div class="Menu1Text" >
+				<div>In addition to the SCS global requirements listed in the <a href="../../pages/Requirements.html" >SCS documentation</a>, the following additional requirements apply for this connector:</div>
+				<div class="Menu2" ><a class="LinkRef" id="hreq" >2.1 - Hardware</a></div>
+				<div class="Menu2Text" >none</div>
+				<div class="Menu2" ><a class="LinkRef" id="sreq" >2.2 - Software</a></div>
+				<div class="Menu2Text" >none</div>
+				<div class="Menu2" ><a class="LinkRef" id="nreq" >2.3 - Network</a></div>
+				<div class="Menu2Text" >Google servers must be reachable from the connector machine.</div>
+			</div>
+			
+			<div class="Menu1" ><a class="LinkRef" id="cs" >3 - Connector SCS functionalities</a></div>
+			<div class="Menu1Text" >
+				<div>The eZ Publish connector can index eZPublish documents.</div>
+			</div>
+			
+			
+			<div class="Menu1" ><a class="LinkRef" id="conConf">4 - Connector configuration</a></div>
+			<div class="Menu1Text" >
+				<div class="Menu2" ><a class="LinkRef" id="conDef" >4.1 - Connector definition</a></div>
+					<table class="DefaultTable" >
+						<tr>
+							<td>Connector ID:</td> <td>Connector instance name which will be used as reference. This field is mandatory and will be locked once the connector instanciate. </td>
+						</tr>
+						<tr>
+							<td>Usage:</td> <td> Defines what this connector will be used for. Only one connector can be configured for authentication. There can be as many group retrievers as necessary. This field is mandatory.</td>
+						</tr>
+						<tr>
+							<td>Namespace:</td> <td> Namespace to use for user/group names. Namespaces allow disambiguation for ACEs with the same name but originating form different systems e.g: many systems contain a group named "Administrators" which is likely to contain different users.</td>
+						</tr>
+					</table>
+				<div class="Menu2" ><a class="LinkRef" id="driveParam" >4.2 - eZ Publish parameters</a></div>
+					<table class="DefaultTable" >
+						<tr>
+							<td>database type:</td> <td> The database type your EzPublish is built with. This field is mandatory</td>
+						</tr>
+						<tr>
+							<td>Connection String:</td> <td> JDBC connection string: &lt;server&gt;:&lt;port&gt;/&lt;db&gt;?&lt;options&gt;. This field is mandatory.</td>
+						</tr>
+						<tr>
+							<td>User:</td> <td> A SQL user with read permission on all required tables. This field is mandatory.</td>
+						</tr>
+						<tr>
+							<td>Password:</td> <td> Above user's password. This field is mandatory.</td>
+						</tr>
+						<tr>
+							<td>Hostname:</td> <td>Fully qualified EzPublish hostname e.g.: http://&lt;yourezpublish&gt;.com. This field is mandatory. </td>
+						</tr>
+						<tr>
+							<td>Site language:</td> <td> Will not get attributes with another language defined.</td>
+						</tr>
+						<tr>
+							<td>Only index searchable attributes:</td> <td> Only get attributes that can be found with navigation.</td>
+						</tr>
+						<tr>
+							<td>Only index published content:</td> <td>Only get published documents.</td>
+						</tr>
+						<tr>
+							<td>Url separator:</td> <td> Separator used in URL to replace illegal characters, default \'-\'.</td>
+						</tr>
+						<tr>
+							<td>Root Node:</td> <td> If EzPublish contains more than one site, you can define a root node.</td>
+						</tr>
+						<tr>
+							<td>Only referenced files:</td> <td> Only get files if they are linked from an index document. Default false.</td>
+						</tr>
+						<tr>
+							<td>get full metadata:</td> <td> Will allow recursively looking for metadata about objects linked to an object.</td>
+						</tr>
+						<tr>
+							<td>Direct index types:</td> <td> List of data types relevant for indexing (article, newspaper, forum,...). This field is mandatory.</td>
+						</tr>
+						<tr>
+							<td>Binary types:</td> <td> Non-textual data types. If a type is on this list but not on the index types list, its elements will only be indexed when other types are referring to them.</td>
+						</tr>
+					</table>
+				<div class="Menu2" ><a class="LinkRef" id="ConfIndex" >4.3 - Indexing</a></div>
+					<table class="DefaultTable" >
+						<tr>
+								<td>Feed files conservation period (days):</td> <td> Defines how long feeds will be stored on disk. 0<=> immediate delete. Defaults to 0.</td>
+							</tr>
+							<tr>
+								<td>Max feed size (MB):</td> <td> Maximum size for a feed file. GSA does not support files larger than 1GB. Defaults to 100MB</td>
+							</tr>
+							<tr>
+								<td>Max document size (MB):</td> <td> Maximum size for an individual document content. Defaults to 100MB.</td>
+							</tr>
+							<tr>
+								<td>Feed dates format:</td> <td> Format for date metatags. Defaults yyyyMMdd.</td>
+							</tr>
+							<tr>
+								<td>Excluded MIME types:</td> <td> List of MIME types that should'nt be indexed.</td>
+							</tr>
+							<tr>
+								<td>Constant meta tags:</td> <td> List of metadata tags that will be added to all documents (observing format: name=value ; name cannot contain an equal sign).</td>
+							</tr>
+							<tr>
+								<td>Meta tags renaming:</td> <td> List of meta tags which name should be changed. For instance if you want the meta tag named Creator to be change to Autor, enter Creator= Author.</td>
+							</tr>
+							<tr>
+								<td>Socket timeout (seconds):</td> <td> Socket timeout configured for HTTP client. Default to 1 minute.</td>
+							</tr>
+							<tr>
+								<td>Max indexing threads:</td> <td> Size of the thread pool dedicated to indexing. Defaults to 2.</td>
+							</tr>
+							<tr>
+								<td>Auth method:</td> <td> Authentication method. Default to httpsso</td>
+							</tr>
+							<tr>
+								<td>Super-user group:</td> <td>If a group has access to all documents, specify this parameter and the group will be added to all documents ACLs.</td>
+							</tr>
+							<tr>
+								<td>User ACEs as Group ACEs:</td> <td>When indexing multiple repositories, if a user has different names accross repositories, indexing user ACEs as group ACEs is necessary because the GSA only allows one verified identity per credential group.</td>
+							</tr>
+							<tr>
+								<td>JAVA Options:</td> <td>Misc options that are passed JAVA at runtime(-D options, -XX options,...)</td>
+							</tr>
+							<tr>
+								<td>IDE time:</td> <td>When traversal completes, this setting determines how long the connector will wait before it starts traversing the repository again (expressed in hours).</td>
+							</tr>
+							<tr>
+								<td>Maximum throughput:</td> <td>Determines the traversal rate (in kB/S). Values lower than, or equal to zero will set an infinite traversal rate.</td>
+							</tr>
+							<tr>
+								<td>Do not index:</td> <td>Prevents the indexer from connecting to the source system during certain periods of time.</td>
+							</tr>
+					</table>
+			</div>
+		</div>
+	</div>
+	<div id="footer" class="tac" >
+		<div class="copy" >Copyright &copy; 2013 Sword Group. All Rights Reserved.</div>
+	</div>
+</body>
+</html>
